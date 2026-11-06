@@ -1,10 +1,18 @@
 import streamlit as st
-from common import ROOT, footer, pillars, query, stage_label
+from common import ROOT, footer, pillars, query, stage_label, table_exists
 
 from pei.intelligence import build_digest
 from pei.metrics.registry import connect_snapshot
 
 st.title("Policy intelligence")
+
+if not table_exists("bill_pillars"):
+    st.info(
+        "Bill data is still being processed. This page will fill in once the classifier has run "
+        "and its results are in the demo snapshot."
+    )
+    footer()
+    st.stop()
 names = pillars()
 baseline = query("SELECT baseline_date FROM change_baseline")["baseline_date"].iloc[0]
 st.caption(

@@ -1,12 +1,11 @@
 # Plan: Policy Evidence & Intelligence prototype
 
 ## Context
-Garrett is applying for Anthropic's Data Scientist, Policy role with an independent proposal. This builds the public, clone-and-run prototype behind it, using electricity affordability and data center accountability as the flagship case. The folder is empty, so everything is new. The first build step copies this plan to `docs/plan.md`.
+An independent proposal for a policy data science function, with a public, clone-and-run prototype behind it. Electricity affordability and data center accountability are the flagship case.
 
-Decisions already made:
-- Garrett hand-labels the eval set blind.
+Decisions:
+- A person hand-labels the eval set blind.
 - API spend is capped at $15, with a 20-bill pilot first.
-- All four posting-gap additions are in scope.
 
 ## Job posting check: brief vs. posting
 | Posting asks for | Brief today | Plan |
@@ -18,30 +17,22 @@ Decisions already made:
 | Measurement for **comms, paid media, and public affairs** | Stretch item, no paid media | Required design doc that includes paid media (no build, no invented data) |
 | Policy analysis with **quasi-experimental methods** | Covered | Flagship study |
 
-Also noted:
-- The posting says "policymakers around the world", while this prototype is US-only. The README will say so.
-- **Confirm the role is still open.** The two Greenhouse job URLs I found returned the general jobs index rather than a posting. Third-party mirrors match your pasted text, but I couldn't confirm the live listing.
+This prototype is US-only, while the role covers policymakers worldwide. The README says so.
 
 ## What the source checks changed
 | Finding | Consequence |
 |---|---|
 | Congress.gov's bill list docs show no keyword search; the 119th Congress has 19,841 bills | Page through all bills, filter locally on title and policy area, then fetch detail for candidates. The eval sample includes filter-rejected bills so missed bills can be measured |
 | `house-vote` endpoint works and links to Clerk XML | House votes are straightforward |
-| `senate-vote` returns 404; Senate XML returned 403 to my browser-style request | Try once with an honestly identified client. If refused, check whether Voteview is usable. If that fails too, ship House-only votes and state the gap. No block workarounds |
+| `senate-vote` returns 404, and senate.gov refuses this client | Senate votes come from Voteview, labeled as a secondary source. No block workarounds |
 | Congress.gov docs reviewed so far don't show committee assignments on the member endpoint | Check at build time; candidate sources are Clerk member data and `congress-legislators` |
 | The 119th Congress ends Jan 3, 2027, and today is after the 2026 election | Congress number is configurable; the app shows that unenacted bills die with this Congress |
-| EIA `retail-sales` runs 2001-01 to 2026-08 with price, sales, revenue, customers | Metadata is confirmed. My one data-row test failed and needs a re-test with a real key |
+| EIA `retail-sales` runs 2001-01 to 2026-08 with price, sales, revenue, customers | Metadata is confirmed. Data rows confirmed with a real key |
 | EIA operational data has `generation`, `cost-per-btu` by location and fuel; units came back blank | Confirm units and state coverage before using as controls |
 | IM3 Atlas (ODbL, from OpenStreetMap): state, county, sqft, but **no dates or MW** | Can't set treatment timing. Use it for cross-sectional intensity and to validate the proxy; committed aggregates carry ODbL attribution and share-alike |
 | Epoch Frontier Data Centers (CC BY 4.0): dated MW timelines, but only **96 AI sites worldwide** | Too few sites and too little post-period for a staggered panel. Descriptive overlay only |
 
 So the brief's fallback applies: **load growth is the continuous exposure, and the study says so plainly.**
-
-## Environment needs
-- `uv` and `gh` are missing. Install both with `winget` at user scope if possible. `gh auth login` is a browser step for Garrett.
-- Git 2.30 and Python 3.12 are fine.
-- Garrett creates `.env` with the three keys. DEMO_KEY only suffices for small tests.
-- The local folder stays `ai_policy_model`; the GitHub repo is `policy-evidence-intelligence`.
 
 ## Repo structure
 Follows the brief, with one change: code lives in `src/pei/{ingest,transform,classify,metrics,analysis}` so it installs as a proper package and tests and the app import it the same way. SQL models live in `src/pei/transform/sql/`. Other additions: `metrics/published_claims.yaml`, `analysis/pre_analysis_plan.md`, `eval/codebook.md`.
@@ -76,7 +67,7 @@ Tests run after each one and I show what works. Commits are logical and scanned 
 - Output: pillars with relevance and rationale, cross-cutting flags, questions, each claim with a source field and verbatim quote.
 - **A deterministic check confirms each quote exists in the cited source field**, and failures are flagged and counted. Change type is computed in SQL, not by the LLM.
 - Pilot 20 bills, project cost, and stop if it exceeds $15.
-- **Hard gate:** sample and codebook go to Garrett before any labeled-sample classifier output is shown to him. About 60 bills, stratified by pillar with filter-rejected negatives, labeled in about an hour.
+- **Hard gate:** sample and codebook go to the labeler before they see any classifier output for the labeled sample. About 60 bills, stratified by pillar with filter-rejected negatives, labeled in about an hour.
 - Report precision and recall per pillar with Wilson intervals, filter recall estimated from the rejected sample, quote-check pass rate, repeat-run agreement, source coverage, and freshness. Small-sample width stays visible.
 - Outputs: ranked alerts, pillar-organized digest with primary links, member view with evidence types and no vote predictions.
 
@@ -93,17 +84,11 @@ Tests run after each one and I show what works. Commits are logical and scanned 
 
 **M6: Dashboard.** The six specified pages run from committed snapshot files in demo mode, loaded into DuckDB at startup. Restrained design, a source line on every chart, the independence disclaimer on the Overview page and in the footer. Use the `dataviz` skill for chart design. Check every page in the browser pane at desktop and phone widths.
 
-**M7: Docs.** `docs/comms_measurement.md` (required: content analysis, surveys, pre/post, paid media geo holdouts), architecture, roadmap. README per brief, including screenshots, what's real vs. synthetic, findings only after the study is done, and an accurate AI-use note saying Claude Code built it, Garrett labeled the data, and Claude is the classifier.
+**M7: Docs.** `docs/comms_measurement.md` (required: content analysis, surveys, pre/post, paid media geo holdouts), architecture, roadmap. README per brief, including screenshots, what's real vs. synthetic, findings only after the study is done, and an accurate AI-use note saying Claude Code built it, a person labeled the data, and Claude is the classifier.
 
 **M8: Fresh-clone test, then GitHub.** Clone to a temp folder and time demo mode from the README's three commands (target under 2 minutes). Run ruff, pytest, and a secret scan. **Then ask before creating the repo or pushing.** Afterward, optional scheduled refresh and Streamlit Community Cloud walkthrough.
 
 If time gets tight, cut in this order: Federal Register, scheduled refresh, Epoch overlay, Streamlit Cloud. The cuts get documented, never faked.
-
-## Stop and ask points
-1. Blind labeling hand-off (M4)
-2. If the pilot projects over $15
-3. Creating the public repo and pushing (M8)
-4. Any license that doesn't clearly permit committing derived data
 
 ## Verification
 - `ruff check` and `pytest` pass locally and in CI: API parsers against recorded fixtures, SQL transforms, registry validator, claims ledger including a deliberate-drift test, quote check, simulated-data recovery for the estimator

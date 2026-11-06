@@ -146,7 +146,7 @@ def classify(documents: list[dict], client: anthropic.Anthropic | None = None) -
 
 
 def candidate_documents() -> list[dict]:
-    """Bills that passed the title filter. Rejected-sample bills exist only to measure the filter."""
+    """Bills that passed the title filter. Rejected bills exist only to measure the filter."""
     rejected_path = RAW_DIR / "congress" / str(CONGRESS) / "rejected_sample.json"
     rejected = {
         f"{CONGRESS}-{bill['type'].lower()}-{bill['number']}"

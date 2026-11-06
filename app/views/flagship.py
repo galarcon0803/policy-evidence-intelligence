@@ -14,6 +14,7 @@ from common import (
     show_chart,
     stage_label,
     style,
+    table_exists,
 )
 
 EIA = "EIA API v2, retail sales, 2001 to 2025. Computed in this project."
@@ -167,31 +168,35 @@ with charts:
         st.dataframe(states, hide_index=True, use_container_width=True)
 
 with legislation:
-    st.markdown(
-        "**Tracked bills tagged to Electricity & affordability**, so the evidence and the legislation "
-        "sit side by side. Relevance comes from the classifier. Listing a bill makes no claim about its "
-        "effects, and this study does not evaluate any of them."
-    )
-    bills = query(
-        """
-        SELECT b.label AS Bill, b.title AS Title, p.relevance AS Relevance, s.stage AS Stage,
-            p.rationale AS "Why tracked", b.latest_action_date AS "Latest action",
-            b.congress_gov_url AS Source
-        FROM bill_pillars AS p
-        JOIN bills AS b USING (bill_id)
-        JOIN bill_stage AS s USING (bill_id)
-        WHERE p.pillar = 'electricity_affordability' AND p.is_relevant
-        ORDER BY p.relevance DESC, s.stage_rank DESC, b.latest_action_date DESC
-        """
-    )
-    bills["Stage"] = bills["Stage"].map(stage_label)
-    st.write(f"{len(bills)} bills")
-    st.dataframe(
-        bills,
-        hide_index=True,
-        use_container_width=True,
-        column_config={"Source": st.column_config.LinkColumn(display_text="Congress.gov")},
-    )
+    if not table_exists("bill_pillars"):
+        st.info("Bill data is still being processed, so this list is not available yet.")
+    else:
+        st.markdown(
+            "**Tracked bills tagged to Electricity & affordability**, so the evidence and the legislation "
+            "sit side by side. Relevance comes from the classifier. Listing a bill makes no claim about its "
+            "effects, and this study does not evaluate any of them."
+        )
+        bills = query(
+            """
+            SELECT b.label AS Bill, b.title AS Title, p.relevance AS Relevance, s.stage AS Stage,
+                p.rationale AS "Why tracked", b.latest_action_date AS "Latest action",
+                b.congress_gov_url AS Source
+            FROM bill_pillars AS p
+            JOIN bills AS b USING (bill_id)
+            JOIN bill_stage AS s USING (bill_id)
+            WHERE p.pillar = 'electricity_affordability' AND p.is_relevant
+            ORDER BY p.relevance DESC, s.stage_rank DESC, b.latest_action_date DESC
+            """
+        )
+        bills["Stage"] = bills["Stage"].map(stage_label)
+        st.write(f"{len(bills)} bills")
+        st.dataframe(
+            bills,
+            hide_index=True,
+            use_container_width=True,
+            column_config={"Source": st.column_config.LinkColumn(display_text="Congress.gov")},
+        )
+
 
 with plan:
     st.markdown((ROOT / "analysis" / "pre_analysis_plan.md").read_text(encoding="utf-8"))

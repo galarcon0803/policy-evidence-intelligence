@@ -10,7 +10,7 @@ names = pillars()
 st.header("Classifier against human labels")
 results = eval_results()
 if results is None:
-    st.warning("Hand labels have not been scored yet.")
+    st.info("Hand labels have not been scored yet, so no accuracy figures exist.")
 else:
     st.markdown(
         f"One person labeled {results['labels_total']} bills blind, before seeing any classifier "
@@ -100,25 +100,26 @@ if table_exists("classifier_runs"):
         "is flagged in the bill explorer."
     )
 
-st.header("Source coverage and freshness")
-freshness = query("SELECT * FROM source_freshness")
-st.dataframe(
-    freshness.rename(
-        columns={
-            "source": "Source",
-            "tier": "Tier",
-            "latest_official_date": "Latest record",
-            "fetched_on": "Fetched",
-            "records": "Records",
-        }
-    ),
-    hide_index=True,
-    use_container_width=True,
-)
-st.caption(
-    "The demo is a committed snapshot, so it does not update on its own. Latest record is the newest date "
-    "in the source's own data."
-)
+if table_exists("source_freshness"):
+    st.header("Source coverage and freshness")
+    freshness = query("SELECT * FROM source_freshness")
+    st.dataframe(
+        freshness.rename(
+            columns={
+                "source": "Source",
+                "tier": "Tier",
+                "latest_official_date": "Latest record",
+                "fetched_on": "Fetched",
+                "records": "Records",
+            }
+        ),
+        hide_index=True,
+        use_container_width=True,
+    )
+    st.caption(
+        "The demo is a committed snapshot, so it does not update on its own. Latest record is the newest date "
+        "in the source's own data."
+    )
 
 st.header("Published numbers")
 claims = load_claims(ROOT / "metrics" / "published_claims.yaml")

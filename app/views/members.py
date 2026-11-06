@@ -1,8 +1,25 @@
 import plotly.graph_objects as go
 import streamlit as st
-from common import EVIDENCE_LABELS, HIGHLIGHT, footer, pillars, query, show_chart, style
+from common import (
+    EVIDENCE_LABELS,
+    HIGHLIGHT,
+    footer,
+    pillars,
+    query,
+    show_chart,
+    style,
+    table_exists,
+)
 
 st.title("Members: documented positions")
+
+if not table_exists("bill_pillars"):
+    st.info(
+        "Bill data is still being processed. This page will fill in once the classifier has run "
+        "and its results are in the demo snapshot."
+    )
+    footer()
+    st.stop()
 st.markdown(
     "**Documented actions only:** sponsorship, cosponsorship, and recorded votes on tracked bills. "
     "**Nothing here predicts how anyone will vote.** A cosponsorship or a vote on one bill is not a "
