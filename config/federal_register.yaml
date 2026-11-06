@@ -1,0 +1,24 @@
+# Federal Register queries. Each is an exact-phrase search of full text, since January 2025.
+document_types: [RULE, PRORULE, NOTICE, PRESDOCU]
+
+# Routine docket notices match on boilerplate and are not policy developments.
+exclude_title_contains:
+  - Combined Notice of Filings
+  - Notice of Effectiveness
+  - Agency Information Collection
+  - Sunshine Act
+  - Information Collection
+  - Notice of Schedule
+  - Notice of Scoping
+  - Preliminary Permit
+
+queries:
+  - {pillar: electricity_affordability, term: "large load", agencies: [federal-energy-regulatory-commission]}
+  - {pillar: electricity_affordability, term: "large load", agencies: [energy-department]}
+  - {pillar: electricity_affordability, term: "large load interconnection"}
+  - {pillar: electricity_affordability, term: "retail electricity"}
+  - {pillar: data_centers_communities, term: "data center", agencies: [federal-energy-regulatory-commission]}
+  - {pillar: data_centers_communities, term: "data center", agencies: [energy-department]}
+  - {pillar: data_centers_communities, term: "data center infrastructure"}
+  - {pillar: education_learning, term: "artificial intelligence", agencies: [education-department]}
+  - {pillar: jobs_skills, term: "artificial intelligence", agencies: [labor-department]}

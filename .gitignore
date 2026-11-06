@@ -18,9 +18,6 @@ data/cache/
 data/*.duckdb
 data/*.duckdb.wal
 
-# Blind-labeling inputs must not expose classifier output
-eval/_private/
-
 # OS / editor
 .DS_Store
 Thumbs.db

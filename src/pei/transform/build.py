@@ -14,8 +14,10 @@ from pathlib import Path
 import duckdb
 import pandas as pd
 
+from pei.classify.export import load_classifications
 from pei.config import CONFIG_DIR, CONGRESS, DB_PATH, RAW_DIR, SNAPSHOT_DIR
 from pei.ingest.candidates import build_matcher, is_candidate
+from pei.ingest.federal_register import load_regulatory
 from pei.ingest.http import read_payload
 from pei.ingest.public_files import AEI_RELEASE
 from pei.ingest.votes import CAST_CODES, classify_vote_question
@@ -42,6 +44,13 @@ SNAPSHOT_TABLES = (
     "bill_changes",
     "change_baseline",
     "source_freshness",
+    "bill_pillars",
+    "bill_lenses",
+    "bill_questions",
+    "bill_evidence",
+    "classifier_runs",
+    "alerts",
+    "regulatory_documents",
 )
 
 
@@ -205,6 +214,9 @@ SELECT 'EIA retail sales', 'primary', make_date(max(year), 12, 31), NULL, count(
 UNION ALL
 SELECT 'Anthropic Economic Index', 'public release', max(period_end), NULL, count(*)::BIGINT
     FROM aei_state
+UNION ALL
+SELECT 'Federal Register', 'primary', max(publication_date), NULL, count(*)::BIGINT
+    FROM regulatory_documents
 """
 
 
@@ -228,6 +240,8 @@ def build(baseline: date | None = None, congress: int = CONGRESS) -> duckdb.Duck
     _load_votes(con, congress)
     _load_public(con)
     set_baseline(con, baseline or date.today() - timedelta(days=14))
+    load_classifications(con)
+    load_regulatory(con)
     run_sql_models(con)
     con.execute(FRESHNESS_SQL)
     return con
