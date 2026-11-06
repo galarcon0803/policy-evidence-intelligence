@@ -20,7 +20,7 @@ WITH wide AS (
         max(price_cents_kwh) FILTER (sector = 'RES') AS res_price,
         max(sales_gwh) FILTER (sector = 'RES') AS res_sales,
         max(revenue_musd) FILTER (sector = 'RES') AS res_revenue,
-        max(customers) FILTER (sector = 'RES') AS res_customers,
+        nullif(max(customers) FILTER (sector = 'RES'), 0) AS res_customers,
         max(price_cents_kwh) FILTER (sector = 'COM') AS com_price,
         max(sales_gwh) FILTER (sector = 'COM') AS com_sales,
         max(sales_gwh) FILTER (sector = 'IND') AS ind_sales,

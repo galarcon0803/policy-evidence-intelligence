@@ -233,6 +233,23 @@ def build(baseline: date | None = None, congress: int = CONGRESS) -> duckdb.Duck
     return con
 
 
+ENERGY_TABLES = (
+    "state_year_panel",
+    "atlas_state",
+    "epoch_us_sites",
+    "aei_state",
+    "aei_job_exposure",
+)
+
+
+def build_energy() -> duckdb.DuckDBPyConnection:
+    """Build only public energy and usage tables, which need no Congress data."""
+    con = duckdb.connect(":memory:")
+    _load_public(con)
+    con.execute((SQL_DIR / "03_energy_panel.sql").read_text(encoding="utf-8"))
+    return con
+
+
 def export_snapshot(con: duckdb.DuckDBPyConnection, tables=SNAPSHOT_TABLES) -> None:
     SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     for table in tables:
@@ -244,7 +261,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--snapshot", action="store_true")
     parser.add_argument("--baseline", type=date.fromisoformat)
+    parser.add_argument("--energy-only", action="store_true")
     args = parser.parse_args()
+    if args.energy_only:
+        export_snapshot(build_energy(), ENERGY_TABLES)
+        raise SystemExit(0)
     connection = build(args.baseline)
     if args.snapshot:
         export_snapshot(connection)

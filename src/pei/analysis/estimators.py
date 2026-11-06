@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
-import statsmodels.formula.api as smf
+import statsmodels.api as sm
 
 NEVER = np.inf
 
@@ -34,27 +34,35 @@ def twfe(
     panel: pd.DataFrame,
     outcome: str,
     exposure: str,
-    controls: str = "",
-    time_effects: str = "C(year)",
+    controls: tuple[str, ...] = (),
+    division_year: bool = False,
     weights: str | None = None,
 ) -> Estimate:
-    """OLS with state and time effects, clustered by state. Rows with missing values are dropped."""
-    formula = f"{outcome} ~ {exposure} + C(state) + {time_effects}"
-    if controls:
-        formula += f" + {controls}"
-    needed = [outcome, exposure, "state", "year", "division"]
-    for column in panel.columns:
-        if column in controls and column not in needed:
-            needed.append(column)
+    """OLS with state and time effects, clustered by state. Rows with missing values are dropped.
+
+    The design is built by hand so it is always full rank. With division_year, one state per
+    division is the reference, because state effects within a division are otherwise collinear
+    with its division-by-year effects.
+    """
+    needed = [outcome, exposure, *controls, "state", "year", "division"]
     if weights:
         needed.append(weights)
-    data = panel[needed].replace([np.inf, -np.inf], np.nan).dropna().copy()
+    data = panel[needed].replace([np.inf, -np.inf], np.nan).dropna().reset_index(drop=True)
+
+    if division_year:
+        time = pd.get_dummies(data["division"].astype(str) + "_" + data["year"].astype(str))
+        reference = data.groupby("division")["state"].transform("min")
+        state = pd.get_dummies(data["state"]).drop(columns=sorted(reference.unique()))
+    else:
+        time = pd.get_dummies(data["year"].astype(str))
+        state = pd.get_dummies(data["state"], drop_first=True)
+    design = pd.concat([data[[exposure, *controls]], time, state], axis=1).astype(float)
     groups = data["state"].astype("category").cat.codes
     cluster = {"cov_type": "cluster", "cov_kwds": {"groups": groups}}
     if weights:
-        fit = smf.wls(formula, data, weights=data[weights]).fit(**cluster)
+        fit = sm.WLS(data[outcome], design, weights=data[weights]).fit(**cluster)
     else:
-        fit = smf.ols(formula, data).fit(**cluster)
+        fit = sm.OLS(data[outcome], design).fit(**cluster)
     low, high = fit.conf_int().loc[exposure]
     return Estimate(
         coef=float(fit.params[exposure]),
@@ -106,12 +114,16 @@ class StaggeredData:
 
 
 def to_staggered(panel: pd.DataFrame, outcome: str, onset: pd.Series) -> StaggeredData:
-    """Align outcome and onset. States already treated (NaN onset) are dropped."""
+    """Align outcome and onset into a balanced panel. No missing value is ever filled in.
+
+    Already-treated states (NaN onset) are dropped. Years with no data for any state are removed
+    first, since some series start late. Then any state still missing a year is dropped.
+    """
     keep = onset.dropna()
     wide = panel[panel["state"].isin(keep.index)].pivot(
         index="state", columns="year", values=outcome
     )
-    wide = wide.replace([np.inf, -np.inf], np.nan).dropna(axis=0)
+    wide = wide.replace([np.inf, -np.inf], np.nan).dropna(axis=1, how="all").dropna(axis=0)
     keep = keep.loc[wide.index]
     return StaggeredData(
         wide.to_numpy(), wide.columns.to_numpy(), list(wide.index), keep.to_numpy()

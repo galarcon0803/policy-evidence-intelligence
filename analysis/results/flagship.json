@@ -1,0 +1,1715 @@
+{
+ "threshold_used": 0.075,
+ "sample": {
+  "years": [
+   2001,
+   2025
+  ],
+  "states": 51
+ },
+ "onsets": [
+  {
+   "state": "AL",
+   "onset": null
+  },
+  {
+   "state": "AR",
+   "onset": null
+  },
+  {
+   "state": "CA",
+   "onset": null
+  },
+  {
+   "state": "CO",
+   "onset": null
+  },
+  {
+   "state": "CT",
+   "onset": null
+  },
+  {
+   "state": "DC",
+   "onset": null
+  },
+  {
+   "state": "DE",
+   "onset": null
+  },
+  {
+   "state": "FL",
+   "onset": null
+  },
+  {
+   "state": "GA",
+   "onset": null
+  },
+  {
+   "state": "HI",
+   "onset": null
+  },
+  {
+   "state": "IA",
+   "onset": 2017
+  },
+  {
+   "state": "ID",
+   "onset": null
+  },
+  {
+   "state": "IL",
+   "onset": null
+  },
+  {
+   "state": "IN",
+   "onset": null
+  },
+  {
+   "state": "KS",
+   "onset": null
+  },
+  {
+   "state": "KY",
+   "onset": null
+  },
+  {
+   "state": "MA",
+   "onset": null
+  },
+  {
+   "state": "MD",
+   "onset": null
+  },
+  {
+   "state": "ME",
+   "onset": null
+  },
+  {
+   "state": "MI",
+   "onset": null
+  },
+  {
+   "state": "MN",
+   "onset": null
+  },
+  {
+   "state": "MS",
+   "onset": null
+  },
+  {
+   "state": "NC",
+   "onset": null
+  },
+  {
+   "state": "NH",
+   "onset": null
+  },
+  {
+   "state": "NJ",
+   "onset": null
+  },
+  {
+   "state": "NY",
+   "onset": null
+  },
+  {
+   "state": "OH",
+   "onset": null
+  },
+  {
+   "state": "OR",
+   "onset": 2020
+  },
+  {
+   "state": "PA",
+   "onset": null
+  },
+  {
+   "state": "RI",
+   "onset": null
+  },
+  {
+   "state": "SC",
+   "onset": null
+  },
+  {
+   "state": "TN",
+   "onset": null
+  },
+  {
+   "state": "TX",
+   "onset": 2020
+  },
+  {
+   "state": "VT",
+   "onset": null
+  },
+  {
+   "state": "WI",
+   "onset": null
+  }
+ ],
+ "already_treated": [
+  "AK",
+  "AZ",
+  "LA",
+  "MO",
+  "MT",
+  "ND",
+  "NE",
+  "NM",
+  "NV",
+  "OK",
+  "SD",
+  "UT",
+  "VA",
+  "WA",
+  "WV",
+  "WY"
+ ],
+ "p1_twfe": {
+  "coef": -0.15280360325804598,
+  "se": 0.07224361220532123,
+  "ci_low": -0.29439848129355384,
+  "ci_high": -0.011208725222538102,
+  "n_obs": 1223,
+  "n_clusters": 51,
+  "mde": 0.20228211417489944
+ },
+ "p2_staggered": {
+  "att": 0.012365323155720753,
+  "se": 0.01650815771794,
+  "ci_low": -0.021772136399821913,
+  "ci_high": 0.04344292544331774,
+  "mde": 0.046222841610232004,
+  "n_states": 35,
+  "n_treated": 3,
+  "n_never": 32,
+  "pretrend_chi2": 4.49293006683632,
+  "pretrend_df": 4,
+  "pretrend_p": 0.3433866143440374
+ },
+ "event_study": [
+  {
+   "event": -8,
+   "att": 0.0017748647914669485,
+   "se": 0.02357950973077789,
+   "ci_low": -0.039170057924514126,
+   "ci_high": 0.049749110344993866,
+   "band_low": -0.06323568564856258,
+   "band_high": 0.06678541523149648
+  },
+  {
+   "event": -7,
+   "att": 0.012836785714212847,
+   "se": 0.023824288533170163,
+   "ci_low": -0.027461806296631787,
+   "ci_high": 0.06233491579155677,
+   "band_low": -0.052848639006972814,
+   "band_high": 0.0785222104353985
+  },
+  {
+   "event": -6,
+   "att": 0.014937628411506075,
+   "se": 0.02401612109270172,
+   "ci_low": -0.02198858024395639,
+   "ci_high": 0.06587575498680902,
+   "band_low": -0.05127669366292642,
+   "band_high": 0.08115195048593857
+  },
+  {
+   "event": -5,
+   "att": 0.012686705506893175,
+   "se": 0.011705970939711593,
+   "ci_low": -0.005649239805629538,
+   "ci_high": 0.03754864578629947,
+   "band_low": -0.019587570884541133,
+   "band_high": 0.04496098189832748
+  },
+  {
+   "event": -3,
+   "att": -0.02583787797891136,
+   "se": 0.0037111241510605687,
+   "ci_low": -0.03305974536618011,
+   "ci_high": -0.018406463911006206,
+   "band_low": -0.03606973718914845,
+   "band_high": -0.01560601876867427
+  },
+  {
+   "event": -2,
+   "att": -0.002670851082323932,
+   "se": 0.008549248012671849,
+   "ci_low": -0.019823785325168628,
+   "ci_high": 0.013479699721034024,
+   "band_low": -0.026241795749874057,
+   "band_high": 0.020900093585226195
+  },
+  {
+   "event": -1,
+   "att": 0.018552498726411883,
+   "se": 0.01303879655929795,
+   "ci_low": -0.008261332775300027,
+   "ci_high": 0.04131545570441991,
+   "band_low": -0.017396482023136484,
+   "band_high": 0.05450147947596025
+  },
+  {
+   "event": 0,
+   "att": 0.021018208093878398,
+   "se": 0.012375232239348166,
+   "ci_low": -0.0034032754954813607,
+   "ci_high": 0.04489869632491162,
+   "band_low": -0.01310127398564499,
+   "band_high": 0.05513769017340178
+  },
+  {
+   "event": 1,
+   "att": 0.01289081850601298,
+   "se": 0.01476190232925122,
+   "ci_low": -0.01748808450511829,
+   "ci_high": 0.04147890040278458,
+   "band_low": -0.027808899466236645,
+   "band_high": 0.053590536478262604
+  },
+  {
+   "event": 2,
+   "att": -0.007739504126323039,
+   "se": 0.039261276548848846,
+   "ci_low": -0.09137635531994014,
+   "ci_high": 0.054843617481138446,
+   "band_low": -0.11598591079725099,
+   "band_high": 0.1005069025446049
+  },
+  {
+   "event": 3,
+   "att": -0.001345850831681969,
+   "se": 0.02965996343320532,
+   "ci_low": -0.0659356305652339,
+   "ci_high": 0.04978981398317364,
+   "band_low": -0.08312068715522812,
+   "band_high": 0.08042898549186418
+  },
+  {
+   "event": 4,
+   "att": 0.040620542425329344,
+   "se": 0.0182189706735761,
+   "ci_low": 0.0029655624113382457,
+   "ci_high": 0.07489855614131499,
+   "band_low": -0.009610583050274991,
+   "band_high": 0.09085166790093369
+  },
+  {
+   "event": 5,
+   "att": 0.008747724867108805,
+   "se": 0.027572398043821902,
+   "ci_low": -0.04430651227074267,
+   "ci_high": 0.0608646811148794,
+   "band_low": -0.06727153059013011,
+   "band_high": 0.08476698032434771
+  },
+  {
+   "event": 6,
+   "att": -0.10210358971455308,
+   "se": 0.026874687328010502,
+   "ci_low": -0.15688009628189267,
+   "ci_high": -0.05329895344542397,
+   "band_low": -0.1761992022207428,
+   "band_high": -0.02800797720836333
+  }
+ ],
+ "placebos": {
+  "randomization": {
+   "observed_att": 0.012365323155720753,
+   "p": 0.827,
+   "draws": 999
+  },
+  "fake_onset_att": 0.06669752962953646,
+  "future_load": {
+   "coef": -0.15025414013008434,
+   "se": 0.094535716863027,
+   "ci_low": -0.33554074043429316,
+   "ci_high": 0.03503246017412445,
+   "n_obs": 1070,
+   "n_clusters": 51,
+   "mde": 0.2647000072164756
+  },
+  "lagged_load_with_future_control": {
+   "coef": 0.03577717399393698,
+   "se": 0.0918571060560352,
+   "ci_low": -0.1442594455999681,
+   "ci_high": 0.21581379358784206,
+   "n_obs": 1070,
+   "n_clusters": 51,
+   "mde": 0.25719989695689854
+  }
+ },
+ "twfe_robustness": {
+  "Commercial-only exposure": {
+   "coef": -0.11501584425618668,
+   "se": 0.07314805929276003,
+   "ci_low": -0.25838340600899673,
+   "ci_high": 0.028351717496623394,
+   "n_obs": 1223,
+   "n_clusters": 51,
+   "mde": 0.20481456601972806
+  },
+  "Division-by-year effects": {
+   "coef": -0.08579174842390762,
+   "se": 0.054015308709090895,
+   "ci_low": -0.1916598081075385,
+   "ci_high": 0.020076311259723256,
+   "n_obs": 1223,
+   "n_clusters": 51,
+   "mde": 0.1512428643854545
+  },
+  "Baseline fuel mix x year": {
+   "coef": -0.1503784652207662,
+   "se": 0.07033112940093623,
+   "ci_low": -0.28822494583862734,
+   "ci_high": -0.012531984602905083,
+   "n_obs": 1127,
+   "n_clusters": 47,
+   "mde": 0.19692716232262145
+  },
+  "Time-varying generation shares (possible bad control)": {
+   "coef": -0.1326969585930401,
+   "se": 0.09199051147706204,
+   "ci_low": -0.3129950480075002,
+   "ci_high": 0.04760113082142001,
+   "n_obs": 1083,
+   "n_clusters": 48,
+   "mde": 0.2575734321357737
+  },
+  "Residential-customer weights": {
+   "coef": -0.39363252096787793,
+   "se": 0.1107939581644097,
+   "ci_low": -0.6107846886747584,
+   "ci_high": -0.17648035326099742,
+   "n_obs": 1223,
+   "n_clusters": 51,
+   "mde": 0.31022308286034717
+  },
+  "Secondary outcome: average bill": {
+   "coef": -0.05118885108600277,
+   "se": 0.06169467941597785,
+   "ci_low": -0.17210820077906397,
+   "ci_high": 0.06973049860705843,
+   "n_obs": 611,
+   "n_clusters": 51,
+   "mde": 0.17274510236473797
+  }
+ },
+ "staggered_robustness": {
+  "Threshold 5 log points": {
+   "att": 0.015425415756998764,
+   "se": 0.03937569834839077,
+   "ci_low": -0.04435928521469009,
+   "ci_high": 0.09716826470822741,
+   "mde": 0.11025195537549415,
+   "n_states": 30,
+   "n_treated": 3,
+   "n_never": 27,
+   "pretrend_chi2": 14.959790660573947,
+   "pretrend_df": 4,
+   "pretrend_p": 0.004785344677836072
+  },
+  "Threshold 7.5 log points": {
+   "att": 0.012365323155720753,
+   "se": 0.016325405964352502,
+   "ci_low": -0.02162445389936599,
+   "ci_high": 0.04328427014803541,
+   "mde": 0.045711136700187005,
+   "n_states": 35,
+   "n_treated": 3,
+   "n_never": 32,
+   "pretrend_chi2": 4.606316953222413,
+   "pretrend_df": 4,
+   "pretrend_p": 0.33012650425397444
+  },
+  "Threshold 10 log points": {
+   "att": -0.049235371515242855,
+   "se": 0.03329699638621227,
+   "ci_low": -0.11330202200704882,
+   "ci_high": 0.010853424587947209,
+   "mde": 0.09323158988139436,
+   "n_states": 41,
+   "n_treated": 4,
+   "n_never": 37,
+   "pretrend_chi2": 6.787446102214256,
+   "pretrend_df": 4,
+   "pretrend_p": 0.14755620749760417
+  },
+  "Threshold 15 log points": {
+   "att": 0.11674268816988533,
+   "se": 0.018426734798657255,
+   "ci_low": 0.08062566931350065,
+   "ci_high": 0.15243072298290236,
+   "mde": 0.05159485743624031,
+   "n_states": 46,
+   "n_treated": 1,
+   "n_never": 45,
+   "pretrend_chi2": 61.18712061918251,
+   "pretrend_df": 4,
+   "pretrend_p": 1.6329923322716323e-12
+  },
+  "Commercial-only exposure": {
+   "att": 0.04267867343546653,
+   "se": 0.047735009084586354,
+   "ci_low": -0.058789663750592115,
+   "ci_high": 0.12015703591785812,
+   "mde": 0.13365802543684177,
+   "n_states": 37,
+   "n_treated": 6,
+   "n_never": 31,
+   "pretrend_chi2": 13.900989593524262,
+   "pretrend_df": 4,
+   "pretrend_p": 0.00761785357948217
+  },
+  "Secondary outcome: average bill": {
+   "att": 0.027323595626077442,
+   "se": 0.016997188312195818,
+   "ci_low": -0.010919793785877718,
+   "ci_high": 0.058345804216888286,
+   "mde": 0.047592127274148285,
+   "n_states": 35,
+   "n_treated": 3,
+   "n_never": 32,
+   "pretrend_chi2": NaN,
+   "pretrend_df": 0,
+   "pretrend_p": NaN
+  }
+ },
+ "leave_one_out": {
+  "twfe_range": [
+   -0.24312992188700547,
+   -0.13364288265832527
+  ],
+  "att_range": [
+   0.003382441943290988,
+   0.024505050350208474
+  ],
+  "named": [
+   {
+    "dropped": "TX",
+    "twfe": -0.13364288265832527,
+    "att": 0.003382441943290988
+   },
+   {
+    "dropped": "VA",
+    "twfe": -0.15610677054027172,
+    "att": 0.012365323155720753
+   }
+  ],
+  "all": [
+   {
+    "dropped": "AK",
+    "twfe": -0.15339683505031987,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "AL",
+    "twfe": -0.1517299181741445,
+    "att": 0.012235411385074054
+   },
+   {
+    "dropped": "AR",
+    "twfe": -0.15359146392660405,
+    "att": 0.012000122651822629
+   },
+   {
+    "dropped": "AZ",
+    "twfe": -0.15089096274526664,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "CA",
+    "twfe": -0.14306009949757809,
+    "att": 0.018960131064061223
+   },
+   {
+    "dropped": "CO",
+    "twfe": -0.15361712024748791,
+    "att": 0.01105885622813069
+   },
+   {
+    "dropped": "CT",
+    "twfe": -0.14582096901406688,
+    "att": 0.015240448097752816
+   },
+   {
+    "dropped": "DC",
+    "twfe": -0.15703105132304426,
+    "att": 0.012866997201638706
+   },
+   {
+    "dropped": "DE",
+    "twfe": -0.16512317665786752,
+    "att": 0.008877932761920988
+   },
+   {
+    "dropped": "FL",
+    "twfe": -0.1524995913875184,
+    "att": 0.012263198230038588
+   },
+   {
+    "dropped": "GA",
+    "twfe": -0.15251772570068986,
+    "att": 0.011202031069041097
+   },
+   {
+    "dropped": "HI",
+    "twfe": -0.14501221722237154,
+    "att": 0.013198916149013156
+   },
+   {
+    "dropped": "IA",
+    "twfe": -0.14691421559301454,
+    "att": 0.009208477173662797
+   },
+   {
+    "dropped": "ID",
+    "twfe": -0.1540009900530162,
+    "att": 0.009757524394984054
+   },
+   {
+    "dropped": "IL",
+    "twfe": -0.15136934020172252,
+    "att": 0.013643145682462368
+   },
+   {
+    "dropped": "IN",
+    "twfe": -0.14799023841723308,
+    "att": 0.013191718490603918
+   },
+   {
+    "dropped": "KS",
+    "twfe": -0.15437433998116737,
+    "att": 0.009403494596707643
+   },
+   {
+    "dropped": "KY",
+    "twfe": -0.14433647503811753,
+    "att": 0.012019094504369098
+   },
+   {
+    "dropped": "LA",
+    "twfe": -0.14366147652348074,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "MA",
+    "twfe": -0.1381259323744852,
+    "att": 0.018001264165150535
+   },
+   {
+    "dropped": "MD",
+    "twfe": -0.14787226457237554,
+    "att": 0.009292589659661028
+   },
+   {
+    "dropped": "ME",
+    "twfe": -0.15857833580353223,
+    "att": 0.01665517769722504
+   },
+   {
+    "dropped": "MI",
+    "twfe": -0.14228347664010035,
+    "att": 0.012298497929153008
+   },
+   {
+    "dropped": "MN",
+    "twfe": -0.1527204606390074,
+    "att": 0.011311769562871159
+   },
+   {
+    "dropped": "MO",
+    "twfe": -0.15390451999096966,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "MS",
+    "twfe": -0.15221626315576145,
+    "att": 0.01174868702750662
+   },
+   {
+    "dropped": "MT",
+    "twfe": -0.15203419541929342,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "NC",
+    "twfe": -0.15457861260254072,
+    "att": 0.010172987130239758
+   },
+   {
+    "dropped": "ND",
+    "twfe": -0.24312992188700547,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "NE",
+    "twfe": -0.152460925168507,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "NH",
+    "twfe": -0.15101934028882202,
+    "att": 0.014569556100080388
+   },
+   {
+    "dropped": "NJ",
+    "twfe": -0.16257433411872124,
+    "att": 0.010225908388283753
+   },
+   {
+    "dropped": "NM",
+    "twfe": -0.1498172051784365,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "NV",
+    "twfe": -0.144247102281054,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "NY",
+    "twfe": -0.15702965711948277,
+    "att": 0.012105253986244449
+   },
+   {
+    "dropped": "OH",
+    "twfe": -0.15414453047041576,
+    "att": 0.010930726882422748
+   },
+   {
+    "dropped": "OK",
+    "twfe": -0.14894689270828945,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "OR",
+    "twfe": -0.16020215125207618,
+    "att": 0.024505050350208474
+   },
+   {
+    "dropped": "PA",
+    "twfe": -0.15408836861468933,
+    "att": 0.011699911658004797
+   },
+   {
+    "dropped": "RI",
+    "twfe": -0.14353474038160385,
+    "att": 0.017343449459089725
+   },
+   {
+    "dropped": "SC",
+    "twfe": -0.15305113341430288,
+    "att": 0.009673299642350565
+   },
+   {
+    "dropped": "SD",
+    "twfe": -0.1590529896783771,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "TN",
+    "twfe": -0.15214785033780828,
+    "att": 0.01123032884599861
+   },
+   {
+    "dropped": "TX",
+    "twfe": -0.13364288265832527,
+    "att": 0.003382441943290988
+   },
+   {
+    "dropped": "UT",
+    "twfe": -0.15288505835295835,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "VA",
+    "twfe": -0.15610677054027172,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "VT",
+    "twfe": -0.15749625909438889,
+    "att": 0.01181370148997824
+   },
+   {
+    "dropped": "WA",
+    "twfe": -0.15327364413473987,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "WI",
+    "twfe": -0.15220864505559914,
+    "att": 0.010698208851182583
+   },
+   {
+    "dropped": "WV",
+    "twfe": -0.15876290391446884,
+    "att": 0.012365323155720753
+   },
+   {
+    "dropped": "WY",
+    "twfe": -0.15582332937624266,
+    "att": 0.012365323155720753
+   }
+  ]
+ },
+ "atlas_intensity": {
+  "coef": -0.01532041410902956,
+  "se": 0.00471376152690092,
+  "ci_low": -0.024559216933465897,
+  "ci_high": -0.006081611284593225,
+  "by_year": [
+   {
+    "year": 2001,
+    "coef": 0.00027246144503850317,
+    "se": 0.008750876259367458
+   },
+   {
+    "year": 2002,
+    "coef": 0.010999663607660488,
+    "se": 0.007977476398768507
+   },
+   {
+    "year": 2003,
+    "coef": 0.0070165229532703315,
+    "se": 0.0077651192687070115
+   },
+   {
+    "year": 2004,
+    "coef": 0.006889491765564729,
+    "se": 0.0076527889204592685
+   },
+   {
+    "year": 2005,
+    "coef": 0.00022123636434902383,
+    "se": 0.008183435477122969
+   },
+   {
+    "year": 2006,
+    "coef": -0.011140312541171293,
+    "se": 0.008812559173575929
+   },
+   {
+    "year": 2007,
+    "coef": -0.01244765850117259,
+    "se": 0.0088325675068419
+   },
+   {
+    "year": 2008,
+    "coef": -0.020574525743481953,
+    "se": 0.009475634396837773
+   },
+   {
+    "year": 2009,
+    "coef": -0.005549939634069387,
+    "se": 0.007881946377016964
+   },
+   {
+    "year": 2010,
+    "coef": -0.0077219331083344936,
+    "se": 0.0065335018270923344
+   },
+   {
+    "year": 2011,
+    "coef": -0.008604331723132531,
+    "se": 0.00721377517976096
+   },
+   {
+    "year": 2012,
+    "coef": -0.001908945169252586,
+    "se": 0.0075465056557664206
+   },
+   {
+    "year": 2013,
+    "coef": -0.002266206748421871,
+    "se": 0.00654304937011939
+   },
+   {
+    "year": 2014,
+    "coef": -0.0016744287376142006,
+    "se": 0.0052154761597993145
+   },
+   {
+    "year": 2016,
+    "coef": -0.0006592662400744175,
+    "se": 0.003965870722553655
+   },
+   {
+    "year": 2017,
+    "coef": -0.002634824396695433,
+    "se": 0.003462101437339052
+   },
+   {
+    "year": 2018,
+    "coef": -0.005680322448315777,
+    "se": 0.0037546628511336624
+   },
+   {
+    "year": 2019,
+    "coef": -0.006770942197558968,
+    "se": 0.004252462315753183
+   },
+   {
+    "year": 2020,
+    "coef": -0.007480656345625251,
+    "se": 0.0051237047571190426
+   },
+   {
+    "year": 2021,
+    "coef": -0.011474190661385589,
+    "se": 0.005418002283824998
+   },
+   {
+    "year": 2022,
+    "coef": -0.021310363725738874,
+    "se": 0.007453680210480264
+   },
+   {
+    "year": 2023,
+    "coef": -0.02290891044239128,
+    "se": 0.006767271927568924
+   },
+   {
+    "year": 2024,
+    "coef": -0.017906083919873174,
+    "se": 0.006516127842438615
+   },
+   {
+    "year": 2025,
+    "coef": -0.019391751470633788,
+    "se": 0.008028825265733992
+   }
+  ]
+ },
+ "exploratory_long_difference": {
+  "ci": {
+   "coef": -0.25498649730310124,
+   "se": 0.09405784552603824,
+   "ci_low": -0.43933648699756805,
+   "ci_high": -0.07063650760863444,
+   "n": 51
+  },
+  "ci_division": {
+   "coef": -0.08612330768210066,
+   "se": 0.08322391882921965,
+   "ci_low": -0.24923919123965602,
+   "ci_high": 0.07699257587545469,
+   "n": 51
+  },
+  "commercial": {
+   "coef": -0.22424486434062946,
+   "se": 0.1047876125911539,
+   "ci_low": -0.429624811045227,
+   "ci_high": -0.018864917636031903,
+   "n": 51
+  },
+  "commercial_division": {
+   "coef": -0.09572427202327759,
+   "se": 0.07495046872169002,
+   "ci_low": -0.24262449134218583,
+   "ci_high": 0.05117594729563067,
+   "n": 51
+  },
+  "ci_placebo_before": {
+   "coef": -0.15382151026276397,
+   "se": 0.0942061300809758,
+   "ci_low": -0.33846213234437195,
+   "ci_high": 0.030819111818844003,
+   "n": 51
+  },
+  "commercial_placebo_before": {
+   "coef": -0.03772152973909462,
+   "se": 0.0632571256831492,
+   "ci_low": -0.1617032178435907,
+   "ci_high": 0.08626015836540148,
+   "n": 51
+  },
+  "states": [
+   {
+    "state": "AK",
+    "price_change": 0.2751,
+    "price_change_before": 0.3994,
+    "ci_growth": -0.0252,
+    "com_growth": -0.0622
+   },
+   {
+    "state": "AL",
+    "price_change": 0.3186,
+    "price_change_before": 0.3801,
+    "ci_growth": -0.026,
+    "com_growth": -0.0259
+   },
+   {
+    "state": "AR",
+    "price_change": 0.2705,
+    "price_change_before": 0.205,
+    "ci_growth": 0.1782,
+    "com_growth": -0.0171
+   },
+   {
+    "state": "AZ",
+    "price_change": 0.2296,
+    "price_change_before": 0.3141,
+    "ci_growth": 0.1722,
+    "com_growth": 0.2504
+   },
+   {
+    "state": "CA",
+    "price_change": 0.6126,
+    "price_change_before": 0.3061,
+    "ci_growth": -0.0841,
+    "com_growth": -0.0362
+   },
+   {
+    "state": "CO",
+    "price_change": 0.2582,
+    "price_change_before": 0.291,
+    "ci_growth": 0.0164,
+    "com_growth": 0.0255
+   },
+   {
+    "state": "CT",
+    "price_change": 0.3363,
+    "price_change_before": 0.4287,
+    "ci_growth": -0.1448,
+    "com_growth": -0.1079
+   },
+   {
+    "state": "DC",
+    "price_change": 0.5232,
+    "price_change_before": 0.3559,
+    "ci_growth": -0.1302,
+    "com_growth": -0.1286
+   },
+   {
+    "state": "DE",
+    "price_change": 0.2453,
+    "price_change_before": 0.3984,
+    "ci_growth": -0.062,
+    "com_growth": 0.0141
+   },
+   {
+    "state": "FL",
+    "price_change": 0.2727,
+    "price_change_before": 0.1854,
+    "ci_growth": 0.0419,
+    "com_growth": 0.0462
+   },
+   {
+    "state": "GA",
+    "price_change": 0.2447,
+    "price_change_before": 0.2894,
+    "ci_growth": 0.1277,
+    "com_growth": 0.1919
+   },
+   {
+    "state": "HI",
+    "price_change": 0.3111,
+    "price_change_before": 0.3576,
+    "ci_growth": -0.0698,
+    "com_growth": -0.1164
+   },
+   {
+    "state": "IA",
+    "price_change": 0.158,
+    "price_change_before": 0.2268,
+    "ci_growth": 0.2737,
+    "com_growth": 0.1214
+   },
+   {
+    "state": "ID",
+    "price_change": 0.1751,
+    "price_change_before": 0.4566,
+    "ci_growth": 0.1173,
+    "com_growth": 0.1237
+   },
+   {
+    "state": "IL",
+    "price_change": 0.3461,
+    "price_change_before": 0.4047,
+    "ci_growth": -0.0471,
+    "com_growth": -0.0814
+   },
+   {
+    "state": "IN",
+    "price_change": 0.3217,
+    "price_change_before": 0.4335,
+    "ci_growth": -0.0466,
+    "com_growth": 0.0651
+   },
+   {
+    "state": "KS",
+    "price_change": 0.1572,
+    "price_change_before": 0.446,
+    "ci_growth": 0.0361,
+    "com_growth": 0.0548
+   },
+   {
+    "state": "KY",
+    "price_change": 0.2486,
+    "price_change_before": 0.4438,
+    "ci_growth": -0.0232,
+    "com_growth": 0.0593
+   },
+   {
+    "state": "LA",
+    "price_change": 0.2941,
+    "price_change_before": 0.0506,
+    "ci_growth": 0.0869,
+    "com_growth": -0.0409
+   },
+   {
+    "state": "MA",
+    "price_change": 0.4276,
+    "price_change_before": 0.389,
+    "ci_growth": -0.112,
+    "com_growth": -0.0697
+   },
+   {
+    "state": "MD",
+    "price_change": 0.3458,
+    "price_change_before": 0.4908,
+    "ci_growth": -0.0807,
+    "com_growth": -0.0782
+   },
+   {
+    "state": "ME",
+    "price_change": 0.5732,
+    "price_change_before": 0.1654,
+    "ci_growth": -0.1173,
+    "com_growth": 0.0127
+   },
+   {
+    "state": "MI",
+    "price_change": 0.3286,
+    "price_change_before": 0.5404,
+    "ci_growth": -0.048,
+    "com_growth": -0.0292
+   },
+   {
+    "state": "MN",
+    "price_change": 0.267,
+    "price_change_before": 0.381,
+    "ci_growth": -0.0702,
+    "com_growth": -0.0251
+   },
+   {
+    "state": "MO",
+    "price_change": 0.171,
+    "price_change_before": 0.4595,
+    "ci_growth": -0.0953,
+    "com_growth": -0.0051
+   },
+   {
+    "state": "MS",
+    "price_change": 0.2191,
+    "price_change_before": 0.2577,
+    "ci_growth": 0.0062,
+    "com_growth": -0.0021
+   },
+   {
+    "state": "MT",
+    "price_change": 0.1773,
+    "price_change_before": 0.2951,
+    "ci_growth": 0.0191,
+    "com_growth": 0.0469
+   },
+   {
+    "state": "NC",
+    "price_change": 0.216,
+    "price_change_before": 0.2655,
+    "ci_growth": -0.0026,
+    "com_growth": 0.0403
+   },
+   {
+    "state": "ND",
+    "price_change": 0.2059,
+    "price_change_before": 0.3194,
+    "ci_growth": 0.6392,
+    "com_growth": 0.604
+   },
+   {
+    "state": "NE",
+    "price_change": 0.1282,
+    "price_change_before": 0.3951,
+    "ci_growth": 0.297,
+    "com_growth": 0.4757
+   },
+   {
+    "state": "NH",
+    "price_change": 0.2821,
+    "price_change_before": 0.3143,
+    "ci_growth": -0.0663,
+    "com_growth": -0.0601
+   },
+   {
+    "state": "NJ",
+    "price_change": 0.352,
+    "price_change_before": 0.2976,
+    "ci_growth": -0.064,
+    "com_growth": -0.0451
+   },
+   {
+    "state": "NM",
+    "price_change": 0.1747,
+    "price_change_before": 0.3118,
+    "ci_growth": 0.3888,
+    "com_growth": 0.0552
+   },
+   {
+    "state": "NV",
+    "price_change": 0.0384,
+    "price_change_before": 0.2239,
+    "ci_growth": 0.0911,
+    "com_growth": 0.3946
+   },
+   {
+    "state": "NY",
+    "price_change": 0.3531,
+    "price_change_before": 0.165,
+    "ci_growth": -0.0737,
+    "com_growth": -0.0646
+   },
+   {
+    "state": "OH",
+    "price_change": 0.2779,
+    "price_change_before": 0.4082,
+    "ci_growth": 0.0991,
+    "com_growth": 0.2029
+   },
+   {
+    "state": "OK",
+    "price_change": 0.2645,
+    "price_change_before": 0.2433,
+    "ci_growth": 0.2605,
+    "com_growth": 0.2783
+   },
+   {
+    "state": "OR",
+    "price_change": 0.3718,
+    "price_change_before": 0.3855,
+    "ci_growth": 0.3688,
+    "com_growth": 0.6196
+   },
+   {
+    "state": "PA",
+    "price_change": 0.3466,
+    "price_change_before": 0.3245,
+    "ci_growth": -0.0489,
+    "com_growth": -0.0819
+   },
+   {
+    "state": "RI",
+    "price_change": 0.4241,
+    "price_change_before": 0.3916,
+    "ci_growth": -0.051,
+    "com_growth": -0.0145
+   },
+   {
+    "state": "SC",
+    "price_change": 0.1847,
+    "price_change_before": 0.3714,
+    "ci_growth": 0.0007,
+    "com_growth": 0.1886
+   },
+   {
+    "state": "SD",
+    "price_change": 0.1841,
+    "price_change_before": 0.3549,
+    "ci_growth": 0.1311,
+    "com_growth": 0.1436
+   },
+   {
+    "state": "TN",
+    "price_change": 0.2496,
+    "price_change_before": 0.3891,
+    "ci_growth": 0.063,
+    "com_growth": 0.0419
+   },
+   {
+    "state": "TX",
+    "price_change": 0.2868,
+    "price_change_before": 0.056,
+    "ci_growth": 0.3864,
+    "com_growth": 0.2479
+   },
+   {
+    "state": "UT",
+    "price_change": 0.1796,
+    "price_change_before": 0.3694,
+    "ci_growth": 0.1038,
+    "com_growth": 0.2392
+   },
+   {
+    "state": "VA",
+    "price_change": 0.2956,
+    "price_change_before": 0.3317,
+    "ci_growth": 0.4185,
+    "com_growth": 0.5832
+   },
+   {
+    "state": "VT",
+    "price_change": 0.2878,
+    "price_change_before": 0.2766,
+    "ci_growth": -0.052,
+    "com_growth": -0.0103
+   },
+   {
+    "state": "WA",
+    "price_change": 0.3708,
+    "price_change_before": 0.3292,
+    "ci_growth": -0.0866,
+    "com_growth": 0.1292
+   },
+   {
+    "state": "WI",
+    "price_change": 0.2479,
+    "price_change_before": 0.3789,
+    "ci_growth": -0.0106,
+    "com_growth": 0.0093
+   },
+   {
+    "state": "WV",
+    "price_change": 0.4232,
+    "price_change_before": 0.4844,
+    "ci_growth": 0.0761,
+    "com_growth": 0.0269
+   },
+   {
+    "state": "WY",
+    "price_change": 0.1978,
+    "price_change_before": 0.3829,
+    "ci_growth": 0.0095,
+    "com_growth": 0.3642
+   }
+  ]
+ },
+ "proxy_validation": {
+  "spearman_ci": {
+   "rho": 0.42533560864389786,
+   "p": 0.001861915372475057
+  },
+  "spearman_com": {
+   "rho": 0.5702251779284297,
+   "p": 1.2526793126075604e-05
+  },
+  "n_states": 51,
+  "states": [
+   {
+    "state": "AK",
+    "ci_growth": -0.0252,
+    "com_growth": -0.0622,
+    "atlas_records": 0,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "AL",
+    "ci_growth": -0.026,
+    "com_growth": -0.0259,
+    "atlas_records": 15,
+    "building_sqft": 2811415.0,
+    "intensity": 3.4857
+   },
+   {
+    "state": "AR",
+    "ci_growth": 0.1782,
+    "com_growth": -0.0171,
+    "atlas_records": 2,
+    "building_sqft": 36425.0,
+    "intensity": 0.5788
+   },
+   {
+    "state": "AZ",
+    "ci_growth": 0.1722,
+    "com_growth": 0.2504,
+    "atlas_records": 82,
+    "building_sqft": 10416682.0,
+    "intensity": 4.9102
+   },
+   {
+    "state": "CA",
+    "ci_growth": -0.0841,
+    "com_growth": -0.0362,
+    "atlas_records": 117,
+    "building_sqft": 7442763.0,
+    "intensity": 3.3843
+   },
+   {
+    "state": "CO",
+    "ci_growth": 0.0164,
+    "com_growth": 0.0255,
+    "atlas_records": 27,
+    "building_sqft": 2124007.0,
+    "intensity": 3.6951
+   },
+   {
+    "state": "CT",
+    "ci_growth": -0.1448,
+    "com_growth": -0.1079,
+    "atlas_records": 5,
+    "building_sqft": 277251.0,
+    "intensity": 2.3424
+   },
+   {
+    "state": "DC",
+    "ci_growth": -0.1302,
+    "com_growth": -0.1286,
+    "atlas_records": 1,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "DE",
+    "ci_growth": -0.062,
+    "com_growth": 0.0141,
+    "atlas_records": 0,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "FL",
+    "ci_growth": 0.0419,
+    "com_growth": 0.0462,
+    "atlas_records": 18,
+    "building_sqft": 594424.0,
+    "intensity": 1.2593
+   },
+   {
+    "state": "GA",
+    "ci_growth": 0.1277,
+    "com_growth": 0.1919,
+    "atlas_records": 66,
+    "building_sqft": 10779617.0,
+    "intensity": 4.3862
+   },
+   {
+    "state": "HI",
+    "ci_growth": -0.0698,
+    "com_growth": -0.1164,
+    "atlas_records": 0,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "IA",
+    "ci_growth": 0.2737,
+    "com_growth": 0.1214,
+    "atlas_records": 69,
+    "building_sqft": 12256229.0,
+    "intensity": 5.5644
+   },
+   {
+    "state": "ID",
+    "ci_growth": 0.1173,
+    "com_growth": 0.1237,
+    "atlas_records": 5,
+    "building_sqft": 708185.0,
+    "intensity": 3.4567
+   },
+   {
+    "state": "IL",
+    "ci_growth": -0.0471,
+    "com_growth": -0.0814,
+    "atlas_records": 67,
+    "building_sqft": 9232237.0,
+    "intensity": 4.2136
+   },
+   {
+    "state": "IN",
+    "ci_growth": -0.0466,
+    "com_growth": 0.0651,
+    "atlas_records": 19,
+    "building_sqft": 1707122.0,
+    "intensity": 2.8527
+   },
+   {
+    "state": "KS",
+    "ci_growth": 0.0361,
+    "com_growth": 0.0548,
+    "atlas_records": 7,
+    "building_sqft": 368200.0,
+    "intensity": 2.3263
+   },
+   {
+    "state": "KY",
+    "ci_growth": -0.0232,
+    "com_growth": 0.0593,
+    "atlas_records": 7,
+    "building_sqft": 226853.0,
+    "intensity": 1.3821
+   },
+   {
+    "state": "LA",
+    "ci_growth": 0.0869,
+    "com_growth": -0.0409,
+    "atlas_records": 5,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "MA",
+    "ci_growth": -0.112,
+    "com_growth": -0.0697,
+    "atlas_records": 3,
+    "building_sqft": 308979.0,
+    "intensity": 1.8956
+   },
+   {
+    "state": "MD",
+    "ci_growth": -0.0807,
+    "com_growth": -0.0782,
+    "atlas_records": 13,
+    "building_sqft": 522848.0,
+    "intensity": 2.2474
+   },
+   {
+    "state": "ME",
+    "ci_growth": -0.1173,
+    "com_growth": 0.0127,
+    "atlas_records": 3,
+    "building_sqft": 63695.0,
+    "intensity": 1.8497
+   },
+   {
+    "state": "MI",
+    "ci_growth": -0.048,
+    "com_growth": -0.0292,
+    "atlas_records": 13,
+    "building_sqft": 887859.0,
+    "intensity": 2.2684
+   },
+   {
+    "state": "MN",
+    "ci_growth": -0.0702,
+    "com_growth": -0.0251,
+    "atlas_records": 18,
+    "building_sqft": 1841561.0,
+    "intensity": 3.3555
+   },
+   {
+    "state": "MO",
+    "ci_growth": -0.0953,
+    "com_growth": -0.0051,
+    "atlas_records": 23,
+    "building_sqft": 2992213.0,
+    "intensity": 3.63
+   },
+   {
+    "state": "MS",
+    "ci_growth": 0.0062,
+    "com_growth": -0.0021,
+    "atlas_records": 14,
+    "building_sqft": 2748821.0,
+    "intensity": 4.051
+   },
+   {
+    "state": "MT",
+    "ci_growth": 0.0191,
+    "com_growth": 0.0469,
+    "atlas_records": 3,
+    "building_sqft": 10003.0,
+    "intensity": 0.533
+   },
+   {
+    "state": "NC",
+    "ci_growth": -0.0026,
+    "com_growth": 0.0403,
+    "atlas_records": 30,
+    "building_sqft": 3482650.0,
+    "intensity": 3.2966
+   },
+   {
+    "state": "ND",
+    "ci_growth": 0.6392,
+    "com_growth": 0.604,
+    "atlas_records": 14,
+    "building_sqft": 147346.0,
+    "intensity": 2.2113
+   },
+   {
+    "state": "NE",
+    "ci_growth": 0.297,
+    "com_growth": 0.4757,
+    "atlas_records": 31,
+    "building_sqft": 5487537.0,
+    "intensity": 5.2314
+   },
+   {
+    "state": "NH",
+    "ci_growth": -0.0663,
+    "com_growth": -0.0601,
+    "atlas_records": 3,
+    "building_sqft": 47602.0,
+    "intensity": 1.6729
+   },
+   {
+    "state": "NJ",
+    "ci_growth": -0.064,
+    "com_growth": -0.0451,
+    "atlas_records": 61,
+    "building_sqft": 7181375.0,
+    "intensity": 4.5657
+   },
+   {
+    "state": "NM",
+    "ci_growth": 0.3888,
+    "com_growth": 0.0552,
+    "atlas_records": 19,
+    "building_sqft": 3457340.0,
+    "intensity": 5.0154
+   },
+   {
+    "state": "NV",
+    "ci_growth": 0.0911,
+    "com_growth": 0.3946,
+    "atlas_records": 42,
+    "building_sqft": 5912497.0,
+    "intensity": 5.1068
+   },
+   {
+    "state": "NY",
+    "ci_growth": -0.0737,
+    "com_growth": -0.0646,
+    "atlas_records": 38,
+    "building_sqft": 1494721.0,
+    "intensity": 2.4013
+   },
+   {
+    "state": "OH",
+    "ci_growth": 0.0991,
+    "com_growth": 0.2029,
+    "atlas_records": 104,
+    "building_sqft": 15172787.0,
+    "intensity": 4.6317
+   },
+   {
+    "state": "OK",
+    "ci_growth": 0.2605,
+    "com_growth": 0.2783,
+    "atlas_records": 11,
+    "building_sqft": 568333.0,
+    "intensity": 2.3288
+   },
+   {
+    "state": "OR",
+    "ci_growth": 0.3688,
+    "com_growth": 0.6196,
+    "atlas_records": 140,
+    "building_sqft": 19679087.0,
+    "intensity": 6.034
+   },
+   {
+    "state": "PA",
+    "ci_growth": -0.0489,
+    "com_growth": -0.0819,
+    "atlas_records": 48,
+    "building_sqft": 1055161.0,
+    "intensity": 2.1054
+   },
+   {
+    "state": "RI",
+    "ci_growth": -0.051,
+    "com_growth": -0.0145,
+    "atlas_records": 0,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "SC",
+    "ci_growth": 0.0007,
+    "com_growth": 0.1886,
+    "atlas_records": 17,
+    "building_sqft": 2240259.0,
+    "intensity": 3.3515
+   },
+   {
+    "state": "SD",
+    "ci_growth": 0.1311,
+    "com_growth": 0.1436,
+    "atlas_records": 2,
+    "building_sqft": 299088.0,
+    "intensity": 3.247
+   },
+   {
+    "state": "TN",
+    "ci_growth": 0.063,
+    "com_growth": 0.0419,
+    "atlas_records": 30,
+    "building_sqft": 4767141.0,
+    "intensity": 3.8887
+   },
+   {
+    "state": "TX",
+    "ci_growth": 0.3864,
+    "com_growth": 0.2479,
+    "atlas_records": 242,
+    "building_sqft": 25773051.0,
+    "intensity": 4.2001
+   },
+   {
+    "state": "UT",
+    "ci_growth": 0.1038,
+    "com_growth": 0.2392,
+    "atlas_records": 23,
+    "building_sqft": 3161284.0,
+    "intensity": 4.6607
+   },
+   {
+    "state": "VA",
+    "ci_growth": 0.4185,
+    "com_growth": 0.5832,
+    "atlas_records": 422,
+    "building_sqft": 55894473.0,
+    "intensity": 6.2146
+   },
+   {
+    "state": "VT",
+    "ci_growth": -0.052,
+    "com_growth": -0.0103,
+    "atlas_records": 1,
+    "building_sqft": 130.0,
+    "intensity": 0.0233
+   },
+   {
+    "state": "WA",
+    "ci_growth": -0.0866,
+    "com_growth": 0.1292,
+    "atlas_records": 81,
+    "building_sqft": 7226938.0,
+    "intensity": 4.3969
+   },
+   {
+    "state": "WI",
+    "ci_growth": -0.0106,
+    "com_growth": 0.0093,
+    "atlas_records": 16,
+    "building_sqft": 450959.0,
+    "intensity": 2.0234
+   },
+   {
+    "state": "WV",
+    "ci_growth": 0.0761,
+    "com_growth": 0.0269,
+    "atlas_records": 2,
+    "building_sqft": 0.0,
+    "intensity": 0.0
+   },
+   {
+    "state": "WY",
+    "ci_growth": 0.0095,
+    "com_growth": 0.3642,
+    "atlas_records": 30,
+    "building_sqft": 3282932.0,
+    "intensity": 5.2729
+   }
+  ],
+  "epoch_us_sites": 57,
+  "epoch_states": 23
+ }
+}

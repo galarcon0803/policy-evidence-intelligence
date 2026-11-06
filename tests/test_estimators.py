@@ -131,3 +131,29 @@ def test_randomization_inference_separates_real_effect_from_noise():
 def test_fake_onset_placebo_is_near_zero_when_real_effect_exists():
     placebo = est.fake_onset_placebo(staggered_from(simulate(effect=0.10)))
     assert abs(placebo) < 0.01
+
+
+def test_division_year_spec_matches_within_estimate_and_survives_missing_rows():
+    """Real data is unbalanced, and the standard error must stay finite with missing rows."""
+    rng = np.random.default_rng(3)
+    rows = []
+    for state in range(40):
+        division = f"D{state % 5}"
+        level = rng.normal()
+        for year in range(2001, 2021):
+            x = level + (state % 5) * 0.01 * year + rng.normal()
+            y = 0.4 * x + level + (state % 5) * 0.03 * year + rng.normal(0, 0.1)
+            rows.append({"state": f"S{state}", "division": division, "year": year, "x": x, "y": y})
+    frame = pd.DataFrame(rows)
+    fit = est.twfe(frame, "y", "x", division_year=True)
+
+    within = frame.copy()
+    for column in ("x", "y"):
+        within[column] -= within.groupby("state")[column].transform("mean")
+        within[column] -= within.groupby(["division", "year"])[column].transform("mean")
+    direct = (within["x"] * within["y"]).sum() / (within["x"] ** 2).sum()
+    assert fit.coef == pytest.approx(direct, abs=1e-5)
+    assert np.isfinite(fit.se) and fit.se > 0
+
+    unbalanced = frame.drop(index=frame.sample(frac=0.05, random_state=1).index)
+    assert np.isfinite(est.twfe(unbalanced, "y", "x", division_year=True).se)
