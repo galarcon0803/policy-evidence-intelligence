@@ -1,0 +1,108 @@
+# Published claims ledger. Every headline number in an external-facing document is pinned here.
+# CI recomputes each value. It fails if a document's text no longer matches, if the metric's
+# version moved, or if the underlying data changed, until a person reviews and re-pins the claim.
+#
+# Pin after review: python -m pei.metrics.registry --pin
+
+claims:
+- id: p1_coefficient
+  text: '| Baseline (P1) | {value} |'
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - p1_twfe
+    - coef
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: p1_ci_low
+  text: '| Baseline (P1) | −0.153 | {value} to'
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - p1_twfe
+    - ci_low
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: p1_ci_high
+  text: '| Baseline (P1) | −0.153 | −0.294 to {value} |'
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - p1_twfe
+    - ci_high
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: p2_randomization_p
+  text: permuting onset years gives p = {value}
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - placebos
+    - randomization
+    - p
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: future_load_coefficient
+  text: '| Load 3 years **ahead** (placebo) | {value} |'
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - placebos
+    - future_load
+    - coef
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: past_load_with_future_control
+  text: with future load included | +{value} |
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - placebos
+    - lagged_load_with_future_control
+    - coef
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: proxy_rho_ci
+  text: '{value} for C&I sales'
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - proxy_validation
+    - spearman_ci
+    - rho
+  decimals: 2
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: proxy_rho_com
+  text: and {value} for commercial sales
+  documents:
+  - analysis/flagship_case_study.md
+  source: flagship_results
+  selector:
+    path:
+    - proxy_validation
+    - spearman_com
+    - rho
+  decimals: 2
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1

@@ -1,0 +1,332 @@
+# Policy metrics registry. Each metric has one canonical definition, here, and nowhere else.
+#
+# status: computable        SQL runs against the snapshot; validated in CI.
+# status: requires_internal Schema only. Requires Anthropic internal data that this independent
+#                           prototype does not have. No value is ever shown for these.
+#
+# Beyond definitions, three fields address which metrics faithfully represent an organization:
+#   decision_use   what this number should inform
+#   misread_risk   the most likely way it will be misunderstood
+#   does_not_show  what a reader must not conclude from it
+
+metrics:
+  - id: residential_price
+    name: Average residential electricity price
+    status: computable
+    definition: >-
+      Residential electricity revenue divided by residential sales, by state and year. This is an
+      average across all charges and customers, not a tariff.
+    sql: |
+      SELECT state, year, res_price AS value
+      FROM state_year_panel
+      WHERE res_price IS NOT NULL
+    unit: cents per kWh (nominal)
+    geography: US state and DC
+    refresh_cadence: Annual, with monthly data available from EIA
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: EIA API v2, electricity/retail-sales (Forms EIA-826, EIA-861, EIA-861M)
+        url: https://www.eia.gov/opendata/browser/electricity/retail-sales
+    limitations: >-
+      Nominal. EIA leaves Alaska's 2016 residential values blank, and no value is filled in.
+    uncertainty: Administrative data with revisions. EIA publishes no sampling error in this series.
+    decision_use: Compare price levels across states and over time.
+    misread_risk: Treating an average price as the rate on any household's bill.
+    does_not_show: Why prices changed, or what a household pays in total.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: residential_price_yoy
+    name: Year-over-year change in residential price
+    status: computable
+    definition: >-
+      Percent change in the average residential price from the prior calendar year, by state. Blank
+      if either year is missing.
+    sql: |
+      SELECT state, year, 100 * (res_price / prior - 1) AS value
+      FROM (
+        SELECT state, year, res_price,
+          lag(res_price) OVER (PARTITION BY state ORDER BY year) AS prior,
+          lag(year) OVER (PARTITION BY state ORDER BY year) AS prior_year
+        FROM state_year_panel
+        WHERE res_price IS NOT NULL
+      )
+      WHERE prior IS NOT NULL AND prior_year = year - 1
+    unit: percent (nominal)
+    geography: US state and DC
+    refresh_cadence: Annual
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: EIA API v2, electricity/retail-sales
+        url: https://www.eia.gov/opendata/browser/electricity/retail-sales
+    limitations: Nominal, so inflation is included. Sensitive to weather through the average.
+    uncertainty: A single year can reflect fuel costs or rate case timing, not a trend.
+    decision_use: Spot unusual movement that may warrant closer analysis.
+    misread_risk: Attributing a one-year move to a single cause such as data centers.
+    does_not_show: Causes, or whether a change is lasting.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: ci_load_growth
+    name: Commercial and industrial load growth
+    status: computable
+    definition: >-
+      Five-year percent change in combined commercial and industrial electricity sales, by state.
+      Used as a proxy for large-load growth.
+    sql: |
+      SELECT state, year, 100 * (ci_sales / prior - 1) AS value
+      FROM (
+        SELECT state, year, ci_sales,
+          lag(ci_sales, 5) OVER (PARTITION BY state ORDER BY year) AS prior
+        FROM state_year_panel
+      )
+      WHERE prior IS NOT NULL
+    unit: percent over 5 years
+    geography: US state and DC
+    refresh_cadence: Annual
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: EIA API v2, electricity/retail-sales
+        url: https://www.eia.gov/opendata/browser/electricity/retail-sales
+    limitations: >-
+      Not a measure of data centers. Includes manufacturing, crypto mining, oil and gas
+      electrification, and general commercial growth. Customers can be reclassified between sectors.
+    uncertainty: >-
+      Its rank correlation with data center footprint across states is moderate. See the flagship
+      study's proxy validation.
+    decision_use: Screen which states are seeing large-load growth.
+    misread_risk: Reading it as data center load.
+    does_not_show: Which customers drove growth, or any effect on prices.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: atlas_footprint
+    name: Mapped data center building footprint
+    status: computable
+    definition: >-
+      Total building footprint in the IM3 Open Source Data Center Atlas, by state, in millions of
+      square feet. Uses the building layer only, since campus and building layers overlap.
+    sql: |
+      SELECT state, building_sqft / 1e6 AS value
+      FROM atlas_state
+    unit: million square feet
+    geography: US state and DC
+    refresh_cadence: On each Atlas release
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: IM3 Open Source Data Center Atlas v2026.11.02 (derived from OpenStreetMap, ODbL)
+        url: https://data.msdlive.org/records/qxpk8-yae09
+    limitations: >-
+      Crowd-sourced, so coverage varies by place. Has no dates or power capacity. A single snapshot.
+    uncertainty: Missing facilities cannot be quantified from the data itself.
+    decision_use: Show where mapped data center development is concentrated.
+    misread_risk: Treating footprint as energy use, or absence from the map as absence of facilities.
+    does_not_show: Power demand, when facilities opened, or effects on communities.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: tracked_bills_by_pillar_stage
+    name: Tracked bills by pillar and stage
+    status: computable
+    definition: >-
+      Count of bills in the current Congress classified as relevant to a policy pillar, by the
+      furthest legislative stage reached in official action records.
+    sql: |
+      SELECT p.pillar, s.stage, count(DISTINCT p.bill_id) AS value
+      FROM bill_pillars AS p
+      JOIN bill_stage AS s USING (bill_id)
+      WHERE p.is_relevant
+      GROUP BY p.pillar, s.stage
+    unit: bills
+    geography: US federal
+    refresh_cadence: On each pipeline run
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: Congress.gov API v3
+        url: https://api.congress.gov/
+      - name: Classifier output, evaluated against hand labels
+        url: eval/labels.csv
+    limitations: >-
+      Depends on the title filter and the classifier, whose precision and recall are reported on the
+      Methods page. Most introduced bills do not advance.
+    uncertainty: The count inherits classifier error. See the Methods page for intervals.
+    decision_use: Track where legislative attention is, and how far bills have moved.
+    misread_risk: Reading a high bill count as momentum or likely enactment.
+    does_not_show: Likelihood of passage, or anyone's position beyond their documented actions.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: claude_usage_per_capita_index
+    name: Claude.ai usage per capita index by state
+    status: computable
+    definition: >-
+      A state's share of US Claude.ai usage divided by its share of the working-age population, as
+      published in the Anthropic Economic Index. 1.0 means usage proportional to population.
+    sql: |
+      SELECT state, period_start, value
+      FROM aei_state
+      WHERE metric_id = 'usage_per_capita_index'
+    unit: index (1.0 = proportional)
+    geography: US state and DC
+    refresh_cadence: On each public Economic Index release
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: Anthropic Economic Index, release 2026-06-26 (public; CC-BY per release documentation)
+        url: https://huggingface.co/datasets/Anthropic/EconomicIndex
+    limitations: >-
+      Covers Claude.ai only, not API or other AI tools. Cells below privacy thresholds are not
+      published, and a missing cell does not mean zero.
+    uncertainty: Rounded to two decimals. Based on a sample of conversations for each period.
+    decision_use: Describe how published usage varies by state.
+    misread_risk: Reading it as AI adoption overall, or as economic benefit to a state.
+    does_not_show: Productivity, jobs, or usage of other AI products.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: claude_coursework_share
+    name: Share of Claude.ai usage for coursework by state
+    status: computable
+    definition: >-
+      Published share of a state's Claude.ai conversations classified as coursework.
+    sql: |
+      SELECT state, period_start, value
+      FROM aei_state
+      WHERE metric_id = 'use_case_coursework_pct'
+    unit: percent of conversations
+    geography: US state and DC
+    refresh_cadence: On each public Economic Index release
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: Anthropic Economic Index, release 2026-06-26 (public; CC-BY per release documentation)
+        url: https://huggingface.co/datasets/Anthropic/EconomicIndex
+    limitations: Classified by a model, and limited to Claude.ai. Published cells only.
+    uncertainty: The publisher reports rounded values and does not publish intervals for this field.
+    decision_use: Describe use in learning, as context for the education pillar.
+    misread_risk: Reading coursework use as evidence of learning outcomes.
+    does_not_show: Whether students learned more or less, or who the users are.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  - id: occupation_observed_exposure
+    name: Observed AI exposure by occupation
+    status: computable
+    definition: >-
+      Published measure of observed AI exposure for each occupation, from the Economic Index labor
+      market impacts release.
+    sql: |
+      SELECT occ_code, title, observed_exposure AS value
+      FROM aei_job_exposure
+    unit: published share (0 to 1)
+    geography: US occupations (SOC)
+    refresh_cadence: On each public Economic Index release
+    owner: Policy data science
+    version: "1.0.0"
+    sources:
+      - name: Anthropic Economic Index, labor_market_impacts/job_exposure.csv (public)
+        url: https://huggingface.co/datasets/Anthropic/EconomicIndex/tree/main/labor_market_impacts
+    limitations: Reflects observed use of one provider's model. The file gives one value per occupation.
+    uncertainty: The file does not include intervals.
+    decision_use: Prioritize which occupations to examine for task change.
+    misread_risk: Reading exposure as displacement.
+    does_not_show: Job losses, wage effects, or hiring.
+    version_history:
+      - {version: "1.0.0", date: "2026-11-06", change: Initial definition}
+
+  # Proposed internal metrics: schema only. This prototype has no such data and shows no values.
+  - id: energy_per_quality_adjusted_workload
+    name: Energy per quality-adjusted workload
+    status: requires_internal
+    definition: >-
+      Metered electricity used for inference and training, divided by workload volume adjusted for
+      model capability. An efficiency measure.
+    schema:
+      - {field: period, type: date}
+      - {field: facility_or_region, type: string}
+      - {field: metered_kwh, type: float}
+      - {field: workload_units, type: float}
+      - {field: quality_adjustment_factor, type: float}
+    unit: kWh per quality-adjusted unit
+    geography: Facility or grid region
+    refresh_cadence: Proposed quarterly
+    owner: Proposed joint with infrastructure
+    version: "0.1.0-proposal"
+    sources:
+      - name: Requires Anthropic internal data (not available to this prototype)
+        url: ""
+    limitations: The quality adjustment is a judgment call that must be published alongside it.
+    uncertainty: To be set by metering coverage and how quality is measured.
+    decision_use: Show progress on efficiency, always beside absolute consumption.
+    misread_risk: >-
+      Efficiency can improve while total consumption rises. Reported alone, this metric would imply a
+      shrinking footprint that may not exist. See total_electricity_consumption.
+    does_not_show: Total demand on the grid, or effects on prices.
+    paired_with: total_electricity_consumption
+    version_history:
+      - {version: "0.1.0-proposal", date: "2026-11-06", change: Proposed schema}
+
+  - id: total_electricity_consumption
+    name: Absolute electricity consumption
+    status: requires_internal
+    definition: Total metered electricity attributable to the organization's workloads, by grid region.
+    schema:
+      - {field: period, type: date}
+      - {field: grid_region, type: string}
+      - {field: metered_kwh, type: float}
+      - {field: attribution_method, type: string}
+    unit: MWh
+    geography: Grid region
+    refresh_cadence: Proposed quarterly
+    owner: Proposed joint with infrastructure
+    version: "0.1.0-proposal"
+    sources:
+      - name: Requires Anthropic internal data (not available to this prototype)
+        url: ""
+    limitations: Leased capacity needs an attribution method, which must be disclosed.
+    uncertainty: To be set by metering coverage and attribution method.
+    decision_use: Report what the grid actually experiences, paired with efficiency.
+    misread_risk: Comparing across companies with different attribution methods.
+    does_not_show: Efficiency, or who bears the cost.
+    paired_with: energy_per_quality_adjusted_workload
+    version_history:
+      - {version: "0.1.0-proposal", date: "2026-11-06", change: Proposed schema}
+
+  - id: attributable_grid_costs_covered
+    name: Share of attributable grid costs covered
+    status: requires_internal
+    definition: >-
+      Payments for interconnection and grid upgrades, divided by the costs those facilities are
+      estimated to cause. Proposed as a way to report against the company's public commitment to
+      cover electricity price increases from its data centers.
+    schema:
+      - {field: period, type: date}
+      - {field: facility_id, type: string}
+      - {field: utility, type: string}
+      - {field: attributable_cost_usd, type: float}
+      - {field: covered_cost_usd, type: float}
+      - {field: attribution_method, type: string}
+    unit: percent
+    geography: Facility, rolled up by utility
+    refresh_cadence: Proposed annual
+    owner: Proposed joint with energy and finance
+    version: "0.1.0-proposal"
+    sources:
+      - name: Requires Anthropic internal data (not available to this prototype)
+        url: ""
+      - name: Public context, Anthropic commitment on electricity price increases (Feb 2026)
+        url: https://www.anthropic.com/news/covering-electricity-price-increases
+    limitations: >-
+      The denominator is an estimate, and the commitment itself describes leased capacity as an open
+      question. Coverage must state which facilities are in scope.
+    uncertainty: The denominator should carry a range, and independent review would strengthen it.
+    decision_use: Assess a public commitment against an auditable number.
+    misread_risk: Reading 100% as proof that no ratepayer bears any cost.
+    does_not_show: Regional wholesale price effects unless explicitly included in the estimate.
+    version_history:
+      - {version: "0.1.0-proposal", date: "2026-11-06", change: Proposed schema}
