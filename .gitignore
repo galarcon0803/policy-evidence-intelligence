@@ -1,0 +1,29 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+dist/
+*.egg-info/
+
+# Local data: raw API responses and built databases are reproducible
+data/raw/
+data/cache/
+data/*.duckdb
+data/*.duckdb.wal
+
+# Blind-labeling inputs must not expose classifier output
+eval/_private/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/

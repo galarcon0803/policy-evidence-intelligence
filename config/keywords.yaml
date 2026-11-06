@@ -1,0 +1,74 @@
+# Local candidate filter for Congress.gov bills. The API's bill list has no keyword
+# search, so every bill title (and, where available, CRS policy area) is matched here.
+# Matching is case-insensitive on word boundaries. This is a recall-oriented filter:
+# its misses are measured using filter-rejected bills in the eval sample.
+
+pillars:
+  electricity_affordability:
+    - data center
+    - data centre
+    - large load
+    - ratepayer
+    - rate payer
+    - electricity rate
+    - electricity price
+    - electricity cost
+    - electric bill
+    - utility bill
+    - energy affordability
+    - low income home energy
+    - LIHEAP
+    - grid
+    - transmission
+    - interconnection
+    - power plant
+    - electric reliability
+    - permitting reform
+  data_centers_communities:
+    - data center
+    - data centre
+    - hyperscale
+    - computing facility
+    - computing infrastructure
+    - AI infrastructure
+    - artificial intelligence infrastructure
+    - water use
+    - noise
+  education_learning:
+    - education technology
+    - edtech
+    - AI literacy
+    - artificial intelligence literacy
+    - digital literacy
+    - AI in education
+    - artificial intelligence in education
+    - computer science education
+    - student data
+    - school
+  jobs_skills:
+    - workforce
+    - apprenticeship
+    - job training
+    - displacement
+    - displaced worker
+    - reskilling
+    - upskilling
+    - automation
+    - AI workforce
+    - labor market
+
+# A bill mentioning AI generally goes through classification for all pillars.
+cross_cutting:
+  - artificial intelligence
+  - machine learning
+  - automated decision
+  - generative AI
+  - frontier model
+  - "AI"
+
+# Exact CRS policy-area names, checked against the API at ingest.
+policy_areas:
+  - Energy
+  - Labor and Employment
+  - Education
+  - Science, Technology, Communications

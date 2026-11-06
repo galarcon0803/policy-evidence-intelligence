@@ -1,0 +1,18 @@
+pillars:
+  electricity_affordability:
+    name: Electricity & affordability
+    scope: Residential rate impacts, cost allocation for large loads, grid investment
+  data_centers_communities:
+    name: Data centers & communities
+    scope: Siting, local tax and jobs, water, noise, local restrictions
+  education_learning:
+    name: Education & learning
+    scope: AI in schools, learning outcomes, procurement, assessment
+  jobs_skills:
+    name: Jobs & skills
+    scope: Occupational task change, displacement, hiring, workforce programs
+
+lenses:
+  safety: Risks of harm from the technology or infrastructure, and safeguards against them
+  equity: Who pays and who benefits
+  governance: Oversight, accountability, transparency, and who decides
