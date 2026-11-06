@@ -14,8 +14,12 @@ if results is None:
 else:
     st.markdown(
         f"One person labeled {results['labels_total']} bills blind, before seeing any classifier "
-        "output, using the same definitions the classifier is given. This is a small sample with one "
-        "labeler, so intervals are wide and inter-rater agreement is not measured."
+        "output, using the same definitions the classifier is given. "
+        f"{results['labels_scored']} of them passed the title filter and are scored here, and the "
+        f"other {results['labels_total'] - results['labels_scored']} measure the filter itself. "
+        "This is a small sample with one labeler, drawn to balance the pillars rather than to mirror "
+        "all bills, so intervals are wide, inter-rater agreement is not measured, and these rates "
+        "should not be read as population estimates."
     )
     table = pd.DataFrame(results["classifier"])
     table["Pillar"] = table["pillar"].map({**names, "all_pillars": "All pillars (micro-average)"})
@@ -35,6 +39,20 @@ else:
     st.caption(
         "Wilson score intervals. Source: eval/labels.csv and classifier output. Computed in this project."
     )
+
+    if results.get("disagreements"):
+        st.subheader("Where the classifier and the human disagree")
+        differ = pd.DataFrame(results["disagreements"])
+        differ["Pillar"] = differ["pillar"].map(names)
+        differ["Human"] = differ["label"].map({1: "Relevant", 0: "Not relevant"})
+        differ["Model score (0 to 3, relevant at 2+)"] = differ["relevance"]
+        st.dataframe(
+            differ.rename(columns={"bill_id": "Bill", "title": "Title"})[
+                ["Bill", "Title", "Pillar", "Human", "Model score (0 to 3, relevant at 2+)"]
+            ],
+            hide_index=True,
+            use_container_width=True,
+        )
 
     st.subheader("What the title filter misses")
     misses = pd.DataFrame(results["filter_misses"])
@@ -56,6 +74,20 @@ else:
             "Bills the title filter rejected, then labeled by hand. A sample this small can only flag a "
             "large problem, and it cannot certify that few relevant bills are missed."
         )
+    estimate = results.get("filter_estimate")
+    if estimate:
+        st.markdown(
+            f"**This is a real gap.** Scaled to the {estimate['near_miss_size']:,} rejected bills with "
+            f"an adjacent title word, the sample implies roughly {estimate['near_miss_missed']:,} "
+            f"relevant bills missed (range {estimate['near_miss_missed_low']:,} to "
+            f"{estimate['near_miss_missed_high']:,}), against {estimate['relevant_found']:,} the "
+            f"pipeline found. Counting only that group, the filter would catch about "
+            f"{estimate['filter_recall_near_miss_only']:.0%} of relevant bills (range "
+            f"{estimate['filter_recall_low']:.0%} to {estimate['filter_recall_high']:.0%}). The other "
+            f"{estimate['other_size']:,} rejected bills had no relevant bill in the sample, but a "
+            f"sample of 10 still allows a rate up to {estimate['other_rate_high']:.0%}, so true "
+            "coverage could be lower. Treat tracked bills as a useful set, not a complete one."
+        )
 
     if results.get("retest"):
         retest = results["retest"]
@@ -73,6 +105,8 @@ if table_exists("classifier_runs"):
         """
         SELECT count(*) AS bills,
             count(*) FILTER (status = 'ok') AS valid,
+            count(*) FILTER (first_attempt_status <> 'ok') AS first_failed,
+            string_agg(bill_id, ', ') FILTER (status <> 'ok') AS still_failed,
             sum(quote_count) AS quotes,
             sum(quote_failures) AS failed_quotes,
             count(*) FILTER (bill_text_truncated) AS truncated,
@@ -84,7 +118,7 @@ if table_exists("classifier_runs"):
         """
     ).iloc[0]
     columns = st.columns(3)
-    columns[0].metric("Bills classified", f"{runs['bills']:,}")
+    columns[0].metric("Bills sent to the classifier", f"{runs['bills']:,}")
     columns[1].metric("Valid structured output", f"{runs['valid']:,}")
     rate = 1 - runs["failed_quotes"] / runs["quotes"] if runs["quotes"] else float("nan")
     columns[2].metric(
@@ -99,6 +133,16 @@ if table_exists("classifier_runs"):
         f"{int(runs['no_summary'])} had no CRS summary. A quote that fails the check stays visible and "
         "is flagged in the bill explorer."
     )
+    if runs["first_failed"]:
+        st.markdown(
+            f"{int(runs['first_failed'])} outputs failed validation on the first attempt, because "
+            "they scored a bill relevant but gave no questions. Each was retried once. "
+            + (
+                f"Still failing, so absent from every page: {runs['still_failed']}."
+                if runs["still_failed"]
+                else "All passed on retry."
+            )
+        )
 
 if table_exists("source_freshness"):
     st.header("Source coverage and freshness")
@@ -148,7 +192,7 @@ st.header("Known limitations")
 st.markdown(
     """
 - **Federal only.** Most electricity rate decisions happen at state commissions, which aren't covered.
-- **Title filter.** The bill list can only be filtered by title, so relevant bills with unrelated titles can be missed.
+- **Title filter.** The bill list can only be filtered by title, and the hand-labeled sample above shows it misses a meaningful share of relevant bills.
 - **Single labeler.** Labels come from one person, in a small sample.
 - **Senate votes are secondary.** Voteview lags official records, and its site states no data license.
 - **Alerts use a reconstructed baseline.** They rely on dated official records, not on two saved copies of the data.

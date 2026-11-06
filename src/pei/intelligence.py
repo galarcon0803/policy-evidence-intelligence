@@ -16,7 +16,7 @@ STAGE_LABELS = {
     "to_president": "Sent to the President",
     "passed_both": "Passed both chambers",
     "passed_one_chamber": "Passed one chamber",
-    "reported_from_committee": "Reported from committee",
+    "reported_from_committee": "Committee: ordered reported or reported",
     "introduced": "Introduced",
 }
 PER_PILLAR = 8

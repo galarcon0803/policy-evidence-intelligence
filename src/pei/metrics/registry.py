@@ -180,8 +180,14 @@ def load_claims(path: Path | None = None) -> list[Claim]:
     return claims
 
 
-def _results_value(selector: dict, root: Path) -> float:
-    data = json.loads((root / "analysis" / "results" / "flagship.json").read_text("utf-8"))
+RESULT_FILES = {
+    "flagship_results": Path("analysis") / "results" / "flagship.json",
+    "eval_results": Path("eval") / "results.json",
+}
+
+
+def _results_value(source: str, selector: dict, root: Path) -> float:
+    data = json.loads((root / RESULT_FILES[source]).read_text("utf-8"))
     node = data
     for key in selector["path"]:
         node = node[key]
@@ -200,8 +206,8 @@ def _metric_value(selector: dict, metrics: list[dict], con: duckdb.DuckDBPyConne
 
 def source_hash(claim_source: str, selector: dict, root: Path, con) -> str:
     """Hash the data behind a claim, so a silent change to the source is detectable."""
-    if claim_source == "flagship_results":
-        payload = (root / "analysis" / "results" / "flagship.json").read_bytes()
+    if claim_source in RESULT_FILES:
+        payload = (root / RESULT_FILES[claim_source]).read_bytes()
     else:
         metric = selector["metric"]
         sql = next(
@@ -224,8 +230,8 @@ def check_claims(root: Path = ROOT, source: Path | None = None) -> list[str]:
     versions = {m["id"]: m["version"] for m in metrics}
     problems = []
     for claim in load_claims(root / "metrics" / "published_claims.yaml"):
-        if claim.source == "flagship_results":
-            value = _results_value(claim.selector, root)
+        if claim.source in RESULT_FILES:
+            value = _results_value(claim.source, claim.selector, root)
         else:
             value = _metric_value(claim.selector, metrics, con)
             current = versions[claim.selector["metric"]]
@@ -260,7 +266,7 @@ def pin_claims(root: Path = ROOT, today: str | None = None) -> int:
         if fresh != row["source_hash"]:
             row["source_hash"] = fresh
             row["as_of"] = today or date.today().isoformat()
-        if row["source"] != "flagship_results":
+        if row["source"] not in RESULT_FILES:
             row["metric_version"] = versions[row["selector"]["metric"]]
     body = yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=100)
     path.write_text(header + body, encoding="utf-8")

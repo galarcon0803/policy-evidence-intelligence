@@ -106,3 +106,92 @@ claims:
   decimals: 2
   as_of: '2026-11-06'
   source_hash: 3167a2ebb911cae1
+- id: readme_p1_coefficient
+  text: baseline elasticity is {value} (
+  documents:
+  - README.md
+  source: flagship_results
+  selector:
+    path:
+    - p1_twfe
+    - coef
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: readme_p1_ci_low
+  text: (95% interval {value} to
+  documents:
+  - README.md
+  source: flagship_results
+  selector:
+    path:
+    - p1_twfe
+    - ci_low
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: readme_p1_ci_high
+  text: 95% interval −0.294 to {value})
+  documents:
+  - README.md
+  source: flagship_results
+  selector:
+    path:
+    - p1_twfe
+    - ci_high
+  decimals: 3
+  as_of: '2026-11-06'
+  source_hash: 3167a2ebb911cae1
+- id: readme_classifier_precision
+  text: precision of {value}%
+  documents:
+  - README.md
+  source: eval_results
+  selector:
+    path:
+    - classifier
+    - 4
+    - precision
+  scale: 100
+  decimals: 0
+  as_of: '2026-11-06'
+  source_hash: 72efdbd824dbed75
+- id: readme_classifier_recall
+  text: recall of {value}%
+  documents:
+  - README.md
+  source: eval_results
+  selector:
+    path:
+    - classifier
+    - 4
+    - recall
+  scale: 100
+  decimals: 0
+  as_of: '2026-11-06'
+  source_hash: 72efdbd824dbed75
+- id: readme_relevant_bills
+  text: '{value} bills tracked'
+  documents:
+  - README.md
+  source: eval_results
+  selector:
+    path:
+    - filter_estimate
+    - relevant_found
+  decimals: 0
+  as_of: '2026-11-06'
+  source_hash: 72efdbd824dbed75
+- id: readme_filter_recall
+  text: about {value}% of relevant bills
+  documents:
+  - README.md
+  source: eval_results
+  selector:
+    path:
+    - filter_estimate
+    - filter_recall_near_miss_only
+  scale: 100
+  decimals: 0
+  as_of: '2026-11-06'
+  source_hash: 72efdbd824dbed75

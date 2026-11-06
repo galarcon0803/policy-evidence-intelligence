@@ -68,8 +68,22 @@ uv run python -m pei.classify.documents
 uv run python -m pei.classify.run
 ```
 
+Score against the hand labels in `eval/labels.csv`. Adding `--retest` reruns the labeled bills, which
+spends a small amount on the API.
+
 ```bash
-uv run python -m pei.transform.build --snapshot
+uv run python -m pei.classify.evaluate --score
+```
+
+The published snapshot uses a baseline of 2026-09-22 for alerts. Congress was largely out before the
+2026 election, so the default 14-day window had only 3 alerts.
+
+```bash
+uv run python -m pei.transform.build --snapshot --baseline 2026-09-22
+```
+
+```bash
+uv run python -m pei.intelligence
 ```
 
 ```bash

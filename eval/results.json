@@ -1,0 +1,136 @@
+{
+ "classifier": [
+  {
+   "pillar": "electricity_affordability",
+   "n": 50,
+   "tp": 15,
+   "fp": 1,
+   "fn": 1,
+   "precision": 0.9375,
+   "precision_low": 0.7167073163197013,
+   "precision_high": 0.9888809426916687,
+   "recall": 0.9375,
+   "recall_low": 0.7167073163197013,
+   "recall_high": 0.9888809426916687
+  },
+  {
+   "pillar": "data_centers_communities",
+   "n": 50,
+   "tp": 10,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1.0,
+   "precision_low": 0.7224598312333834,
+   "precision_high": 1.0,
+   "recall": 1.0,
+   "recall_low": 0.7224598312333834,
+   "recall_high": 1.0
+  },
+  {
+   "pillar": "education_learning",
+   "n": 50,
+   "tp": 5,
+   "fp": 0,
+   "fn": 2,
+   "precision": 1.0,
+   "precision_low": 0.5655085052479191,
+   "precision_high": 1.0,
+   "recall": 0.7142857142857143,
+   "recall_low": 0.35892909014821267,
+   "recall_high": 0.9177828342909844
+  },
+  {
+   "pillar": "jobs_skills",
+   "n": 50,
+   "tp": 7,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1.0,
+   "precision_low": 0.6456611570247934,
+   "precision_high": 1.0,
+   "recall": 1.0,
+   "recall_low": 0.6456611570247934,
+   "recall_high": 1.0
+  },
+  {
+   "pillar": "all_pillars",
+   "n": 200,
+   "tp": 37,
+   "fp": 1,
+   "fn": 3,
+   "precision": 0.9736842105263158,
+   "precision_low": 0.8650482156319974,
+   "precision_high": 0.9953395324464698,
+   "recall": 0.925,
+   "recall_low": 0.8013546984090248,
+   "recall_high": 0.9741644432281419
+  }
+ ],
+ "filter_misses": [
+  {
+   "stratum": "rejected_near_miss",
+   "n": 10,
+   "relevant": 3,
+   "rate_low": 0.10778928748621183,
+   "rate_high": 0.6032267800204347
+  },
+  {
+   "stratum": "rejected_other",
+   "n": 10,
+   "relevant": 0,
+   "rate_low": 0.0,
+   "rate_high": 0.2775401687666166
+  }
+ ],
+ "filter_estimate": {
+  "relevant_found": 254,
+  "near_miss_size": 1421,
+  "other_size": 17785,
+  "near_miss_missed": 426,
+  "near_miss_missed_low": 153,
+  "near_miss_missed_high": 857,
+  "other_rate_high": 0.2775401687666166,
+  "other_missed_high": 4936,
+  "filter_recall_near_miss_only": 0.37336469204762607,
+  "filter_recall_low": 0.2285847467757165,
+  "filter_recall_high": 0.6238202406196958
+ },
+ "disagreements": [
+  {
+   "bill_id": "119-hr-10005",
+   "title": "Data Center Resource Disclosure Act",
+   "pillar": "electricity_affordability",
+   "label": 1,
+   "relevance": 1
+  },
+  {
+   "bill_id": "119-hr-8507",
+   "title": "Precision Agriculture Workforce Training and Development Act",
+   "pillar": "education_learning",
+   "label": 1,
+   "relevance": 1
+  },
+  {
+   "bill_id": "119-hres-707",
+   "title": "Providing for consideration of the bill (H.R. 4922) to limit youth offender status in the District of Columbia to individuals 18 years of age or younger, to direct the Attorney General of the District of Columbia to establish and operate a publicly accessible website containing updated statistics on juvenile crime in the District of Columbia, to amend the District of Columbia Home Rule Act to prohibit the Council of the District of Columbia from enacting changes to existing criminal liability sentences, and for other purposes; providing for consideration of the bill (H.R. 5143) to establish standards for law enforcement officers in the District of Columbia to engage in vehicular pursuits of suspects, and for other purposes; providing for consideration of the bill (H.R. 5140) to lower the age at which a minor may be tried as an adult for certain criminal offenses in the District of Columbia to 14 years of age; providing for consideration of the bill (H.R. 5125) to amend the District of Columbia Home Rule Act to terminate the District of Columbia Judicial Nomination Commission, and for other purposes; providing for consideration of the bill (H.R. 1047) to require the Federal Energy Regulatory Commission to reform the interconnection queue process for the prioritization and approval of certain projects, and for other purposes; providing for consideration of the bill (H.R. 3015) to reestablish the National Coal Council in the Department of Energy to provide advice and recommendations to the Secretary of Energy on matters related to coal and the coal industry, and for other purposes; providing for consideration of the bill (H.R. 3062) to establish a more uniform, transparent, and modern process to authorize the construction, connection, operation, and maintenance of international border-crossing facilities for the import and export of oil and natural gas and the transmission of electricity; and for other purposes.",
+   "pillar": "electricity_affordability",
+   "label": 0,
+   "relevance": 2
+  },
+  {
+   "bill_id": "119-s-3757",
+   "title": "Foreign Medical School Accountability Fairness Act of 2026",
+   "pillar": "education_learning",
+   "label": 1,
+   "relevance": 1
+  }
+ ],
+ "labels_total": 70,
+ "labels_scored": 50,
+ "blank_cells": 0,
+ "retest": {
+  "n": 200,
+  "agreement": 1.0,
+  "cost_usd": 0.4646
+ }
+}

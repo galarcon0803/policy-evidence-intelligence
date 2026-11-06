@@ -134,6 +134,18 @@ price growth in the prior decade, though the interval includes zero.
 
 All three share a limit: their data ends by 2025, before much of the announced AI-era buildout.
 
+## Related legislation
+This study evaluates no bill, and listing one makes no claim about its effects. The dashboard's Linked
+legislation tab lists every tracked bill in the Electricity & affordability pillar. One example on
+this exact question is the [Ratepayer Protection Act (H.R. 9340)](https://www.congress.gov/bill/119th-congress/house-bill/9340),
+whose text covers recovering the cost of grid upgrades from large-load customers. The House passed it
+417 to 3 under suspension of the rules on September 16, 2026
+([Roll 312](https://clerk.house.gov/evs/2026/roll312.xml)). In the Senate, cloture on the motion to
+proceed was not invoked, 57 to 43, on September 30, 2026 (Record Vote 254, per the Congress.gov action
+record), and the motion was withdrawn. That Senate vote is procedural and is not a vote on the bill's
+final passage. The evidence here covers state-level prices through 2025, and it can't say what cost
+allocation rules like these would do for households.
+
 ## Threats to identification
 - **Reverse causality.** Large loads seek cheap power. This is the main threat, and the future-load
   test suggests it matters here.

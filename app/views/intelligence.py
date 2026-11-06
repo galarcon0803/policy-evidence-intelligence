@@ -42,6 +42,15 @@ with alerts_tab:
         [chosen],
     )
     alerts["Stage"] = alerts["Stage"].map(stage_label)
+    change_names = {
+        "new": "newly introduced",
+        "new_action": "new action",
+        "new_text_version": "new text",
+        "vote_held": "vote held",
+    }
+    alerts["Changes"] = alerts["Changes"].map(
+        lambda value: ", ".join(change_names.get(part, part) for part in value.split(", "))
+    )
     if alerts.empty:
         st.write("No tracked bill in this pillar changed in this period.")
     else:

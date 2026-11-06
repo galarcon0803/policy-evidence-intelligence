@@ -145,6 +145,30 @@ def classify(documents: list[dict], client: anthropic.Anthropic | None = None) -
     return summary
 
 
+def retry_failed(documents: list[dict]) -> dict:
+    """Retry each failed record once. The first attempt is archived and stays counted."""
+    prompt = load_prompt()
+    failed = []
+    for document in documents:
+        path = cache_path(content_hash(render_for_model(document), prompt))
+        if not path.exists():
+            continue
+        record = json.loads(path.read_text(encoding="utf-8"))
+        if record["status"] != "ok" and "retried_from" not in record:
+            archive = CACHE_DIR / "classifications_failed" / path.name
+            archive.parent.mkdir(parents=True, exist_ok=True)
+            archive.write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+            path.unlink()
+            failed.append((path, record["status"], document))
+    summary = classify([document for _, _, document in failed])
+    for path, first_status, _ in failed:
+        if path.exists():
+            record = json.loads(path.read_text(encoding="utf-8"))
+            record["retried_from"] = first_status
+            path.write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
+    return summary
+
+
 def candidate_documents() -> list[dict]:
     """Bills that passed the title filter. Rejected bills exist only to measure the filter."""
     rejected_path = RAW_DIR / "congress" / str(CONGRESS) / "rejected_sample.json"
@@ -160,8 +184,12 @@ def main() -> None:
     parser.add_argument("--pilot", type=int)
     parser.add_argument("--budget", type=float, default=15.0)
     parser.add_argument("--exclude", type=Path, help="CSV of bill_ids to leave out of the pilot")
+    parser.add_argument("--retry-failed", action="store_true", help="Retry failed records once")
     args = parser.parse_args()
     documents = candidate_documents()
+    if args.retry_failed:
+        print(json.dumps(retry_failed(documents), indent=1))
+        return
     if args.pilot:
         import pandas as pd
 

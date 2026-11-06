@@ -112,10 +112,6 @@ def test_real_registry_entries_are_complete():
     assert problems == []
 
 
-@pytest.mark.skipif(
-    not (ROOT / "data" / "snapshot" / "bill_pillars.parquet").exists(),
-    reason="Pending: the bill-count metric needs classifier output in the snapshot",
-)
 def test_real_metric_sql_runs_on_snapshot():
     assert reg.validate_registry(reg.load_registry(), reg.connect_snapshot()) == []
 
@@ -140,8 +136,9 @@ def test_published_claims_match_current_results():
 @pytest.fixture
 def sandbox(tmp_path: Path) -> Path:
     """A copy of everything the ledger reads, so a test can introduce drift safely."""
-    for folder in ("metrics", "data/snapshot", "analysis"):
+    for folder in ("metrics", "data/snapshot", "analysis", "eval"):
         shutil.copytree(ROOT / folder, tmp_path / folder)
+    shutil.copy(ROOT / "README.md", tmp_path / "README.md")
     return tmp_path
 
 

@@ -18,6 +18,7 @@ from pei.classify.documents import bill_files, build_document, render_for_model
 from pei.classify.run import (
     batch_cost,
     cache_path,
+    candidate_documents,
     content_hash,
     load_prompt,
     make_request,
@@ -142,9 +143,50 @@ def load_predictions(bill_ids: list[str]) -> pd.DataFrame:
                     "bill_id": bill_id,
                     "pillar": item["pillar"],
                     "predicted": int(item["relevance"] >= RELEVANT_AT),
+                    "relevance": item["relevance"],
                 }
             )
     return pd.DataFrame(rows)
+
+
+def disagreements(labels: pd.DataFrame, predictions: pd.DataFrame) -> pd.DataFrame:
+    """Every bill-pillar pair where the human and the classifier differ, for readers to inspect."""
+    long = labels.melt(
+        id_vars=["bill_id", "title"],
+        value_vars=list(PILLARS),
+        var_name="pillar",
+        value_name="label",
+    ).dropna(subset=["label"])
+    merged = long.astype({"label": int}).merge(predictions, on=["bill_id", "pillar"])
+    differ = merged[merged["label"] != merged["predicted"]]
+    return differ[["bill_id", "title", "pillar", "label", "relevance"]].sort_values("bill_id")
+
+
+def filter_estimate(misses: pd.DataFrame, relevant_found: int, sizes: dict[str, int]) -> dict:
+    """Scale the rejected-sample rates up to their strata, to size what the title filter misses.
+
+    The near-miss stratum gives a usable range. The other stratum is far larger and its 0-of-n
+    sample still allows a high rate, so its upper bound is reported, not folded into a recall.
+    """
+    by_name = misses.set_index("stratum")
+    near = by_name.loc["rejected_near_miss"]
+    other = by_name.loc["rejected_other"]
+    near_size, other_size = sizes["near_miss"], sizes["other"]
+    rate = near["relevant"] / near["n"]
+    missed = near_size * rate
+    return {
+        "relevant_found": relevant_found,
+        "near_miss_size": near_size,
+        "other_size": other_size,
+        "near_miss_missed": round(missed),
+        "near_miss_missed_low": round(near_size * near["rate_low"]),
+        "near_miss_missed_high": round(near_size * near["rate_high"]),
+        "other_rate_high": float(other["rate_high"]),
+        "other_missed_high": round(other_size * other["rate_high"]),
+        "filter_recall_near_miss_only": relevant_found / (relevant_found + missed),
+        "filter_recall_low": relevant_found / (relevant_found + near_size * near["rate_high"]),
+        "filter_recall_high": relevant_found / (relevant_found + near_size * near["rate_low"]),
+    }
 
 
 def score(labels: pd.DataFrame, predictions: pd.DataFrame) -> pd.DataFrame:
@@ -251,10 +293,19 @@ def run_score(with_retest: bool = False) -> dict:
     in_scope = strata[~strata["_stratum"].str.startswith("rejected")]["bill_id"]
     table = score(labels[labels["bill_id"].isin(in_scope)], predictions)
     misses = filter_misses(labels, strata)
+    scored = labels[labels["bill_id"].isin(in_scope)]
+    sample = read_payload(RAW_DIR / "congress" / str(CONGRESS) / "rejected_sample.json")
+    sizes = {bill["stratum"]: bill["stratum_size"] for bill in sample}
+    candidates = [document["bill_id"] for document in candidate_documents()]
+    everything = load_predictions(candidates)
+    found = int(everything.loc[everything["predicted"] == 1, "bill_id"].nunique())
     results = {
         "classifier": table.to_dict("records"),
         "filter_misses": misses.to_dict("records"),
+        "filter_estimate": filter_estimate(misses, found, sizes),
+        "disagreements": disagreements(scored, predictions).to_dict("records"),
         "labels_total": len(labels),
+        "labels_scored": len(scored),
         "blank_cells": int(labels[list(PILLARS)].isna().sum().sum()),
     }
     out = ROOT / "eval" / "results.json"

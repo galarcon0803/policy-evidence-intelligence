@@ -19,6 +19,7 @@ COLUMNS = {
     "runs": [
         "bill_id",
         "status",
+        "first_attempt_status",
         "model_served",
         "prompt_version",
         "effort",
@@ -43,6 +44,7 @@ def flatten(record: dict, document: dict) -> dict[str, list[dict]]:
         {
             "bill_id": bill_id,
             "status": record["status"],
+            "first_attempt_status": record.get("retried_from", record["status"]),
             "model_served": record["model_served"],
             "prompt_version": record["prompt_version"],
             "effort": record["effort"],
