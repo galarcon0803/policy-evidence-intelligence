@@ -5,8 +5,9 @@ classifier's precision and recall, so please go with your own judgment, not what
 to say. Don't use an AI tool for labeling.
 
 ## How to label
-Open `eval/labels_to_fill.csv`. It has about 60 bills. Use the title and summary in the sheet, and
-follow the Congress.gov link if they aren't enough. This should take about a minute per bill.
+Open `eval/labels_to_fill.csv`. It has 70 bills. Use the title and summary in the sheet, and follow
+the Congress.gov link if they aren't enough. Many bills have no official summary yet, so the sheet
+shows the opening of the bill text instead, marked `(bill text)`. Plan on about a minute per bill.
 
 For each of the four pillar columns, enter:
 
@@ -42,5 +43,7 @@ The classifier follows these same rules, so both are held to one definition.
 - **General AI bills:** not automatically relevant. Mark only the pillars the bill actually addresses.
 
 ## Why the sheet includes off-topic bills
-About a third of the sheet was rejected by the title keyword filter. They measure what that filter
+About a quarter of the sheet was rejected by the title keyword filter. They measure what that filter
 misses, so expect many of them to be 0 across the board. If one is relevant, that's a useful finding.
+
+Please don't open `eval/sample_strata.csv` until you've finished. It shows which bills the filter rejected.

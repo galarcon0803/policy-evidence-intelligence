@@ -54,6 +54,19 @@ def stratum_for(title: str, matcher) -> str:
     return "ai_only" if match["keyword_ai"] else "rejected"
 
 
+def sheet_context(document: dict, limit: int = 1200) -> str:
+    """What the labeler reads: the CRS summary if there is one, or else the bill's own opening."""
+    if document["crs_summary"]:
+        return document["crs_summary"][:limit]
+    text = document["bill_text"]
+    if not text:
+        return "(no summary or text published: use the link)"
+    # Skip the printing header, which sits before the words that open the bill or resolution.
+    starts = [i for i in (text.find(w) for w in ("A BILL", "RESOLUTION", "AN ACT")) if i >= 0]
+    start = min(starts) if starts else 0
+    return "(bill text) " + text[start : start + limit]
+
+
 def make_sheet(per_stratum: int = PER_STRATUM, seed: int = SEED) -> pd.DataFrame:
     """About 10 bills per keyword stratum, plus AI-title-only bills and the 20 rejected bills."""
     matcher = build_matcher()
@@ -93,7 +106,7 @@ def make_sheet(per_stratum: int = PER_STRATUM, seed: int = SEED) -> pd.DataFrame
                     "bill_id": document["bill_id"],
                     "title": document["title"],
                     "policy_area": document["policy_area"],
-                    "summary": (document["crs_summary"] or "(no CRS summary yet)")[:1200],
+                    "summary": sheet_context(document),
                     "url": f"https://www.congress.gov/bill/{CONGRESS}th-congress/{url_type}/{number}",
                     **{pillar: "" for pillar in PILLARS},
                     "notes": "",

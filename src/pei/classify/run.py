@@ -172,7 +172,7 @@ def main() -> None:
             :: len(documents) // args.pilot
         ]
         summary = classify(chosen[: args.pilot])
-        per_bill = summary["cost"] / max(args.pilot - summary["cached"], 1)
+        per_bill = summary["cost"] / max(summary["requested"] - summary["cached"], 1)
         projected = per_bill * len(documents)
         print(json.dumps(summary, indent=1))
         print(
