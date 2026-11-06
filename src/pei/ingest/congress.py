@@ -6,6 +6,7 @@ Run: python -m pei.ingest.congress [--limit N]
 from __future__ import annotations
 
 import argparse
+import random
 import re
 from datetime import UTC, datetime
 
@@ -116,19 +117,51 @@ def fetch_members(client: Client, congress: int = CONGRESS) -> None:
     write_json(path, members, url)
 
 
+NEAR_MISS = re.compile(
+    r"\b(energy|electric\w*|power|utilit\w+|technolog\w+|comput\w+|cyber\w*|digital|labor|"
+    r"worker\w*|employ\w+|job\w*|student\w*|teacher\w*|educat\w+)\b",
+    re.IGNORECASE,
+)
+
+
+def rejected_sample(
+    bills: list[dict], matcher, congress: int = CONGRESS, each: int = 10, seed: int = 119
+) -> list[dict]:
+    """Sample filter-rejected bills to measure what the filter misses.
+
+    Two strata are drawn: near misses (adjacent words in the title) and everything else. The
+    sample is saved once, so a later list refresh cannot quietly change the eval set.
+    """
+    path = raw_path("congress", str(congress), "rejected_sample.json")
+    if path.exists():
+        return read_payload(path)
+    rejected = [b for b in bills if not is_candidate(b.get("title", ""), matcher)]
+    near = [b for b in rejected if NEAR_MISS.search(b.get("title", ""))]
+    other = [b for b in rejected if not NEAR_MISS.search(b.get("title", ""))]
+    rng = random.Random(seed)
+    sample = []
+    for stratum, members in (("near_miss", near), ("other", other)):
+        for bill in rng.sample(members, each):
+            sample.append({**bill, "stratum": stratum, "stratum_size": len(members)})
+    write_json(path, sample, f"{BASE}/bill/{congress}")
+    return sample
+
+
 def run(limit: int | None = None, congress: int = CONGRESS) -> dict:
     client = Client(min_interval=MIN_INTERVAL)
     bills = fetch_bill_list(client, congress)
     matcher = build_matcher()
     candidates = [b for b in bills if is_candidate(b.get("title", ""), matcher)]
+    rejected = rejected_sample(bills, matcher, congress)
     if limit:
         candidates = candidates[:limit]
-    for number, bill in enumerate(candidates, 1):
+    targets = candidates + rejected
+    for number, bill in enumerate(targets, 1):
         fetch_bill_detail(client, bill, congress)
         if number % 50 == 0:
-            print(f"  {number}/{len(candidates)} bills")
+            print(f"  {number}/{len(targets)} bills", flush=True)
     fetch_members(client, congress)
-    return {"bills_listed": len(bills), "candidates": len(candidates)}
+    return {"bills_listed": len(bills), "candidates": len(candidates), "rejected": len(rejected)}
 
 
 if __name__ == "__main__":

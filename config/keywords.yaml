@@ -1,5 +1,5 @@
 # Local candidate filter for Congress.gov bills. The API's bill list has no keyword
-# search, so every bill title (and, where available, CRS policy area) is matched here.
+# search and does not return policy area, so only titles can be matched at this stage.
 # Matching is case-insensitive on word boundaries. This is a recall-oriented filter:
 # its misses are measured using filter-rejected bills in the eval sample.
 
@@ -65,10 +65,3 @@ cross_cutting:
   - generative AI
   - frontier model
   - "AI"
-
-# Exact CRS policy-area names, checked against the API at ingest.
-policy_areas:
-  - Energy
-  - Labor and Employment
-  - Education
-  - Science, Technology, Communications

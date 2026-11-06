@@ -10,7 +10,8 @@ from pei.ingest.http import Client, raw_path, write_json
 
 BASE = "https://api.eia.gov/v2/electricity"
 PAGE = 5000
-FUELS = ("COW", "NGO", "NUC", "ALL", "AOR")
+# NG carries cost-per-btu; NGO (gas and other gases) carries almost none.
+FUELS = ("COW", "NG", "NGO", "NUC", "ALL", "AOR")
 ELECTRIC_POWER_SECTOR = "98"
 
 

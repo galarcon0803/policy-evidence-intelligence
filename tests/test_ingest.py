@@ -117,3 +117,18 @@ def test_aei_filter_keeps_only_us_overall():
     assert keep_aei_row({"category_name": "overall", "geo_id": "USA"})
     assert not keep_aei_row({"category_name": "overall", "geo_id": "GBR"})
     assert not keep_aei_row({"category_name": "onet", "geo_id": "US-VA"})
+
+
+def test_rejected_sample_draws_both_strata_and_is_stable(tmp_path, monkeypatch):
+    from pei.ingest import congress
+
+    monkeypatch.setattr(
+        congress, "raw_path", lambda *parts: tmp_path.joinpath(*parts[-1:]), raising=True
+    )
+    bills = [
+        {"type": "HR", "number": str(i), "title": f"Rural Energy Thing {i}"} for i in range(30)
+    ] + [{"type": "HR", "number": str(i + 100), "title": f"Post Office {i}"} for i in range(30)]
+    sample = congress.rejected_sample(bills, None, each=5)
+    assert {b["stratum"] for b in sample} == {"near_miss", "other"}
+    assert sum(b["stratum"] == "near_miss" for b in sample) == 5
+    assert congress.rejected_sample([], None, each=5) == sample
