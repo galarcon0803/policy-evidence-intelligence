@@ -19,14 +19,15 @@ schema_only = sum(m["status"] == "requires_internal" for m in registry())
 years = query("SELECT min(year) AS a, max(year) AS b FROM state_year_panel").iloc[0]
 
 first, second, third = st.columns(3)
-first.metric("Bills tracked as relevant", f"{tracked:,}")
+first.metric("Bills tracked", f"{tracked:,}" if table_exists("bill_pillars") else "Pending")
 second.metric(
-    "Metrics with live definitions",
+    "Live metrics",
     computable,
-    f"plus {schema_only} proposed, schema only",
+    f"+{schema_only} proposed",
     delta_color="off",
+    delta_arrow="off",
 )
-third.metric("Years in the state energy panel", f"{years['a']} to {years['b']}")
+third.metric("State energy panel", f"{years['a']}-{str(years['b'])[-2:]}")
 
 st.header("Three connected capabilities")
 left, middle, right = st.columns(3)
